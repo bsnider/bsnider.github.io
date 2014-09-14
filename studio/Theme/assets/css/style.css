@@ -412,6 +412,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Contact Wrap */
+#storyMapWrap,
 #contactwrap {
 	background-color: #2f2f2f;
 	margin-top: 0px;
@@ -419,18 +420,22 @@ h1, h2, h3, h4, h5, h6 {
 	padding-bottom: 25px;
 }
 
+#storyMapWrap,
 #contactwrap p {
 	color: #f2f2f2;
 }
 
+#storyMapWrap,
 #contactwrap small {
 	font-size: 13px;
 }
 
+.storyMap,
 .contact {
 	background-image: url(../img/contact-sep.jpg);
 }
 
+#storyMapWrap,
 #contactwrap label {
 	color: #f2f2f2;
 	margin-top: 10px;
