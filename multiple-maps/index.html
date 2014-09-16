@@ -116,6 +116,12 @@
                         bool1 = false;
                     });
                 });*/
+                    /*                    handleOver = on(document.getElementById(divId), "mousedown", function(e) {
+                        var num = this.id.slice(3, 4);
+                        var hoverBox = "box" + num;
+                        document.getElementById(hoverBox).style.background = "#0ff";
+                        handle = mapArray[num].on("extent-change", setMapExt);
+                    });*/
                     handleOver = on(document.getElementById(divId), "mouseover", function(e) {
                         var num = this.id.slice(3, 4);
                         var hoverBox = "box" + num;
