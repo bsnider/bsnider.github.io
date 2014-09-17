@@ -58,6 +58,8 @@
     var myBox;
     var handleOver;
     var handleOut;
+    var handleUp;
+    var handleDown;
 
 
     require([
@@ -110,30 +112,89 @@
             for (var i = 0; i < mapCount; i++) {
                 if (bool == true) {
                     var divId = "map" + i + "Div";
-                    /*on(document.getElementById(divId), "mouse-up", function(e) {
-                    bool1 = true;
-                    on(document.getElementById(divId), "mouse-down", function(e) {
-                        bool1 = false;
+                    var div = document.getElementById(divId);
+
+                    handleOver = on(div, "mouseover", function(e) {
+                        var num = this.id.slice(3, 4);
+                        var hoverBox = "box" + num;
+                        document.getElementById(hoverBox).style.background = "#0ff";
+                        handle = mapArray[num].on("extent-change", setMapExt);
                     });
-                });*/
+
+
+                    //determine mouse status
+                    document.onmouseup = mouseUp;
+                    document.onmousedown = mouseDown;
+                    var mouseState = "up";
+
+                    function mouseDown(ev) {
+                        mouseState = "down";
+                        console.log('Down State you can now start dragging');
+                        //do not write any code here in this function
+                    }
+
+                    function mouseUp(ev) {
+                        mouseState = "up";
+                        console.log('up state you cannot drag now because you are not holding your mouse')
+                        //do not write any code here in this function
+                    }
+
+
+
+                    //if mouse is up, no panning is occurring, act as normal
+                    if (mouseState == "up") {
+                        handleOut = on(div, "mouseout", function(e) {
+                            //console.log(e);
+                            console.log("out");
+
+                            handle.remove();
+                            var num = this.id.slice(3, 4);
+                            var hoverBox = "box" + num;
+                            document.getElementById(hoverBox).style.background = "";
+                        });
+                    }
+
+                    //if mouse is down, the map is being panned.  
+                    if (mouseState == "down") {
+                        console.log("mouse is down");
+                        handleOut = on(div, "mouseout", function(e) {
+                            console.log(e);
+                            console.log("out2");
+                            var num = this.id.slice(3, 4);
+                            var hoverBox = "box" + num;
+                            document.getElementById(hoverBox).style.background = "";
+                        });
+                        handleUp = on(div, "mouseup", function(e) {
+                            console.log("up2");
+                            handle.remove();
+                        });
+                    }
                     /*                    handleOver = on(document.getElementById(divId), "mousedown", function(e) {
                         var num = this.id.slice(3, 4);
                         var hoverBox = "box" + num;
                         document.getElementById(hoverBox).style.background = "#0ff";
                         handle = mapArray[num].on("extent-change", setMapExt);
-                    });*/
-                    handleOver = on(document.getElementById(divId), "mouseover", function(e) {
-                        var num = this.id.slice(3, 4);
-                        var hoverBox = "box" + num;
-                        document.getElementById(hoverBox).style.background = "#0ff";
-                        handle = mapArray[num].on("extent-change", setMapExt);
                     });
-                    handleOut = on(document.getElementById(divId), "mouseout", function(e) {
+                                        handleUp = on(document.getElementById(divId), "mouseup", function(e) {
+                        console.log("up");
+
                         handle.remove();
                         var num = this.id.slice(3, 4);
                         var hoverBox = "box" + num;
                         document.getElementById(hoverBox).style.background = "";
                     });
+                    handleOut = on(document.getElementById(divId), "mouseout", function(e) {
+                        console.log(e);
+                        console.log("out");
+
+                        handle.remove();
+                        var num = this.id.slice(3, 4);
+                        var hoverBox = "box" + num;
+                        document.getElementById(hoverBox).style.background = "";
+                    });*/
+
+
+
                     /*                } else {
                     console.log(bool);
                     var divId = "map" + i + "Div";
