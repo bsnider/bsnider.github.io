@@ -16,6 +16,8 @@
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="fancybox/jquery.fancybox-v=2.1.5.css" type="text/css" media="screen">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="/fancybox/jquery.fancybox.pack.js"></script>
     <link rel="stylesheet" href="css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -48,6 +50,38 @@
 </head>
 
 <body>
+    <a href="http://jquery.com/">jQuery</a>
+    <script src="jquery.js"></script>
+    <script>
+    // Your code goes here.
+    $(document).ready(function() {
+
+        /* This is basic - uses default settings */
+
+        $("a#single_image").fancybox();
+
+        /* Using custom settings */
+
+        $("a#inline").fancybox({
+            'hideOnContentClick': true
+        });
+
+        /* Apply fancybox to multiple items */
+
+        $("a.group").fancybox({
+            'transitionIn': 'elastic',
+            'transitionOut': 'elastic',
+            'speedIn': 600,
+            'speedOut': 200,
+            'overlayShow': false
+        });
+
+    });
+    </script>
+
+
+
+
     <div class="navbar navbar-fixed-top" data-activeslide="1">
         <div class="container">
 
@@ -116,7 +150,7 @@
     </div>
     <!-- /.arrows -->
 
-<!-- 15B28A -->
+    <!-- 15B28A -->
     <!-- === MAIN Background === -->
     <div class="slide story" id="slide-1" data-slide="1">
         <div class="container">
@@ -162,33 +196,54 @@
 
     <! -- STORY MAP SECTION -->
     <section id="storyMap" name="storyMap"></section>
-    <div class="sep contact" data-stellar-background-ratio="0.5"></div>
+    <div class="sep contact" data-stellar-background-ratio="0.5" height="100%"></div>
 
     <div id="storyMapWrap">
         <div class="container">
             <div class="row">
-                <div class="col-lg-10">
-                    <h1>This is the story map</h1>
-                    <h3>I'll do all the work for you</h3>
 
-
-
-
-
-
-                    <!-- <iframe src="../../map-tour-storytelling-template-js-master/MapTour/src/index.html"></iframe> -->
-
-
-
+                <div class="col-12 col-sm-6 col-lg-2">
+                    <a class="iframe" href="http://google.com">iframe
+                        <!-- <img class="thumb" src="images/portfolio/p05-small.jpg" alt=""> -->
+                    </a>
                 </div>
-                <iframe height="800" width="1000" class="col-lg-10" src="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b" seamless></iframe>
+
+
+                <div class="col-12 col-sm-6 col-lg-2">
+                    <a data-fancybox-type="iframe" href="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b">iframe
+                        <!-- <img class="thumb" src="images/portfolio/p05-small.jpg" alt=""> -->
+                    </a>
+                </div>
+
+
+
+                <!-- <div class="col-lg-10"> -->
+                <!--                     <h1>This is the story map</h1>
+                    <h3>I'll do all the work for you</h3> -->
+
+
+
+
+
+
+                <!-- <iframe src="../../map-tour-storytelling-template-js-master/MapTour/src/index.html"></iframe> -->
+
+
+
             </div>
+            <!--                 <iframe height="800" width="1000" class="col-lg-10" src="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b" seamless></iframe> -->
+
+            <!-- </div> -->
             <! --/row -->
 
         </div>
         <! --/container -->
     </div>
-
+    <!-- <iframe width="100%" height="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b"></iframe>
+    <br />
+    <small><a href="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b" target="_blank">View larger map</a>
+    </small>
+ -->
 
 
 
