@@ -79,6 +79,29 @@
     });
     </script>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="left: 0%; width: 95%; height: 95%;">
+            <div class="modal-content" style="left: 0%; width: 100%; height: 100%;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <!--                     <iframe src="/user/dashboard" width="300" height="380" frameborder="0" allowtransparency="true"></iframe> -->
+                    <iframe height="600" width="100%" src="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b" seamless></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
 
 
 
@@ -194,26 +217,16 @@
     </div>
     <!-- /slide1 -->
 
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Trigger Modal in iFrame</button>
+
+
     <! -- STORY MAP SECTION -->
     <section id="storyMap" name="storyMap"></section>
-    <div class="sep contact" data-stellar-background-ratio="0.5" height="100%"></div>
+    <div class="container-fluid" data-stellar-background-ratio="0.5" height="100%"></div>
 
     <div id="storyMapWrap">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-
-                <div class="col-12">
-                    <a class="iframe" href="http://google.com">iframe
-                        <!-- <img class="thumb" src="images/portfolio/p05-small.jpg" alt=""> -->
-                    </a>
-                </div>
-
-
-                <div class="col-12">
-                    <a data-fancybox-type="iframe" href="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b">iframe
-                        <!-- <img class="thumb" src="images/portfolio/p05-small.jpg" alt=""> -->
-                    </a>
-                </div>
 
 
 
@@ -231,8 +244,8 @@
 
 
             </div>
-            <iframe class="col-12" height="1000" src="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b" seamless></iframe>
-
+            <!--             <iframe class="container-fluid" height="1000" src="http://www.arcgis.com/apps/MapTour/index.html?appid=9eb3a7e766ea4a8ea39bb3a5735ddf21&webmap=a91aa31834584cfbb7d68ff1bb2acf2b" seamless></iframe>
+ -->
             <!-- </div> -->
             <! --/row -->
 
