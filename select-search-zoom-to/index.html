@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>PopupDropdownZoom</title>
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+    <style>
+    html,
+    body,
+    #mapDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        font-family: Verdana, Helvetica, sans-serif;
+        font-size: small;
+    }
+    #mapDiv {
+        position: relative;
+    }
+    #info {
+        background: #fff;
+        box-shadow: 0 0 5px #888;
+        left: 1em;
+        padding: 0.5em;
+        position: absolute;
+        top: 1em;
+        z-index: 40;
+    }
+    .esriPopup .titleButton.maximize {
+        display: none;
+    }
+    </style>
+    <script src="http://js.arcgis.com/3.10/"></script>
+    <script>
+    var map, featureLayer, features, query, mySelect;
+    require([
+        "esri/map",
+        "esri/layers/FeatureLayer",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/Color",
+        "dojo/dom-style",
+        "dojo/dom",
+        "dojo/on",
+        "dojo/dom-construct",
+        "dojo/parser",
+        "esri/geometry/Point",
+        "esri/tasks/query",
+        "esri/tasks/QueryTask",
+        "esri/dijit/InfoWindow",
+        "esri/geometry/Extent",
+        "esri/SpatialReference",
+        "esri/config",
+
+        "dojo/domReady!"
+    ], function(
+        Map,
+        FeatureLayer,
+        SimpleFillSymbol,
+        SimpleLineSymbol,
+        Color,
+        domStyle,
+        dom,
+        on,
+        domConstruct,
+        parser,
+        Point,
+        Query,
+        QueryTask,
+        InfoWindow,
+        Extent,
+        SpatialReference,
+        Config
+    ) {
+
+        parser.parse();
+
+        var infoWindow = new InfoWindow({
+            domNode: domConstruct.create("div", null, dom.byId("map"))
+        });
+
+        var initExtent = Extent(-15904011.274005856, 3620978.36527377, -5914608.921475398, 5822364.779886261, new SpatialReference({
+            "wkid": 102100
+        }));
+
+        map = new Map("mapDiv", {
+            basemap: "gray",
+            center: [-75.4733, 39.3305],
+            zoom: 14,
+        });
+
+
+        featureLayer = new FeatureLayer("http://co.kent.de.us/arcgis/rest/services/testParcels/FeatureServer/0", {
+            outFields: ["*"],
+            mode: FeatureLayer.MODE_SNAPSHOT
+        });
+
+        var selectionSymbol = new SimpleFillSymbol().setColor(new Color([155, 155, 0, 0.5]));
+        featureLayer.setSelectionSymbol(selectionSymbol);
+        map.addLayer(featureLayer);
+
+        //<<<<<<<<<<<<SELECTORS<<<<<<<<<<<<<<<<<<<<<<<<<<
+        //click feature
+        map.on("click", mapClickQueryZoom);
+
+        function mapClickQueryZoom(evt) {
+            map.infoWindow.hide();
+            var query = new Query();
+            query.geometry = evt.mapPoint;
+            zoomFeature(query);
+        }
+
+
+
+        //select feature from dropdown
+        document.getElementById("mySelect").onchange = selectDropdown;
+
+        function selectDropdown() {
+            var selectedValue = document.getElementById("mySelect").value;
+            var query = new Query();
+            query.where = "PARCELID = '" + selectedValue + "'";
+            console.log(query);
+            zoomFeature(query);
+        }
+
+        //search feature
+        onClickSearch = function selectFeature() {
+            var selectedValue = dom.byId("mySearch").value;
+            console.log(selectedValue);
+            var query = new Query();
+            query.where = "PARCELID = '" + selectedValue + "'";
+            console.log(query);
+            zoomFeature(query);
+        }
+
+        /*        //FIND VALUE OF SELECTED DROPDOWN DOM ELEMENT
+        onClickSelect = function selectFeature() {
+            var selectedValue = document.getElementById("mySelect").value;
+            zoomFeature(selectedValue);
+        }*/
+
+
+        /*        function setSelectedIndex(s, v) {
+            for (var i = 0; i < s.options.length; i++) {
+                if (s.options[i].text == v) {
+                    s.options[i].selected = true;
+                    return;
+                }
+            }
+        }*/
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
+
+        //<<<<<<<<<<<<LOCATE <<<<<<<<<<<<<<<<<<<<<<<<<<
+        function zoomFeature(query) {
+            map.infoWindow.hide();
+            //EXECUTE QUERY
+            var point = new Point();
+            featureLayer.selectFeatures(query, esri.layers.FeatureLayer.SELECTION_NEW, function(features) {
+                var featureExtent = features[0].geometry.getExtent().expand(2);
+                var selectedValue = features[0].attributes.PARCELID;
+                var queryViolations = new Query;
+                queryViolations.where = "PARCELID = '" + selectedValue + "'";
+                var QTViolations = new QueryTask("http://co.kent.de.us/arcgis/rest/services/testParcels/FeatureServer/1");
+
+                queryViolations.outFields = ["*"];
+                QTViolations.execute(queryViolations, showResults);
+                var attributesArray = [];
+
+                function showResults(violationsSet) {
+                    console.log(violationsSet);
+                    var length = violationsSet.features.length;
+                    console.log(length);
+                    if (length == 0) {
+                        attributesArray.push("There are no violations... yet!");
+                    } else {
+                        for (var i = 0; i < length; i++) {
+
+                            attributesArray.push(violationsSet.features[i].attributes.VIOLATIONTYPE);
+                        }
+                    }
+
+                    console.log(attributesArray[0]);
+
+
+                    //UNCOMMENT TO NOT ZOOM OUT THEN IN
+                    deffered = map.setExtent(featureExtent);
+                    centerPoint(featureExtent, point);
+
+                    //CREATE INFOWINDOW PROPERTIES
+                    map.infoWindow.setTitle("<b>" + "Popup" + "</b>");
+                    console.log(attributesArray[0]);
+
+                    map.infoWindow.setContent("<b>Parcel ID:</b> " + features[0].attributes.PARCELID + "</br> <b> Violation type:</b> " + attributesArray.toString());
+                    //SHOW INFO WINDOW AFTER ZOOM OCCURS
+                    deffered.then(
+                        map.on("extent-change", function() {
+                            map.infoWindow.resize(300, 300);
+                            map.infoWindow.show(point, map.getInfoWindowAnchor(point));
+                        })
+                    )
+                }
+
+            });
+        }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
+        //FIND CENTER OF FEATURE
+        function centerPoint(featureExtent, point) {
+            var xMid = (featureExtent.xmin + featureExtent.xmax) / 2;
+            var yMid = (featureExtent.ymin + featureExtent.ymax) / 2;
+            point.x = xMid;
+            point.y = yMid;
+            point.spatialReference = map.spatialReference;
+        }
+
+        //CREATE DROPDOWN
+        var StateList = []
+        query = new Query();
+        query.where = "1=1";
+        //RUN QUERY TO FIND ALL FEATURES AND POPULATE DROPDOWN
+        featureLayer.queryFeatures(query, function(objectIds) {
+            for (i = 0; i < objectIds.features.length; i++) {
+                //CHECK TO ONLY ADD FEATURES WITH UNIQUE VALUES
+                if (objectIds.features[i].attributes.PARCELID != "") {
+                    StateList.push(objectIds.features[i].attributes.PARCELID);
+                }
+                StateList.sort();
+            }
+            //CREATE REFERENCE TO DROPDOWN
+            var mySelectVar = document.getElementById('mySelect');
+
+            //CREATE NEW OPTION
+            for (var i = 0; i < StateList.length; i++) {
+                var newOption = document.createElement("option");
+                newOption.value = StateList[i];
+                newOption.innerHTML = StateList[i];
+                //console.log(newOption);
+                mySelectVar.add(newOption);
+            }
+        });
+
+
+    });
+    </script>
+</head>
+
+<body class="tundra">
+    <div id="mapDiv">
+        <div id="info">
+            <input type="text" id="mySearch" value="1-00-00510-01-3100-00001">
+            <input id="execute" type="button" value="Search Parcels" onClick="onClickSearch();">
+            <br />
+            <br />
+            <label for="mySelect"><b>Make a Selection:</b>
+            </label>
+            <select id="mySelect">
+                <option value="" style="display:none;">&nbsp; &nbsp; &nbsp;Choose a parcel &nbsp;</option>
+            </select>
+        </div>
+    </div>
+</body>
+
+</html>
