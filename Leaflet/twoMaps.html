@@ -44,122 +44,82 @@
         console.log(">>>>>>>>>>>>>>>>>> set listeners");
 
         function onMapMove(e) {
-            //console.log(e.target._container.id);
-            console.log("move" + 1);
-            var newZoom = mapArray[1].getZoom();
-            var newCenter = mapArray[1].getCenter();
-            handle = mapArray[0].setView(newCenter, newZoom);
+            var clickedMap = e.target._container.id;
+            var mapNum = clickedMap.slice(3, 4);
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].off('move', onMapMove);
+                if (i != mapNum){
+                    console.log("move" + 1);
+                    var newZoom = mapArray[1].getZoom();
+                    var newCenter = mapArray[1].getCenter();
+                    mapArray[0].setView(newCenter, newZoom);
+                }
+            }
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].on('move', onMapMove);
+            }
+             
+        }
+
+
+        function onMapMove(e) {
+            var clickedMap = e.target._container.id;
+            var mapNum = clickedMap.slice(3, 4);
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].off('move', onMapMove);
+                if (i != mapNum){
+                    console.log("move" + i);
+                    var newZoom = mapArray[i].getZoom();
+                    var newCenter = mapArray[i].getCenter();
+                    mapArray[i].setView(newCenter, newZoom);
+                }
+            }
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].on('move', onMapMove);
+            }
+                        
+
         }
         mapArray[1].on('move', onMapMove);
 
 
-        function onMapMoveEnd(e) {
-            handle.remove();
+
+
+
+        //mapArray[1].on('move', onMapMove);
+
+        //function onMapMoveEnd(e) {
+
+            /*//handle.remove();
             console.log(handle);
-            //console.log(e.target._container.id);
-            console.log("MoveEnd" + 1);
+
+            var clickedMap = e.target._container.id;
+            var mapNum = clickedMap.slice(3, 4);
+            " + mapNum);
             var newZoom = mapArray[1].getZoom();
             var newCenter = mapArray[1].getCenter();
-            mapArray[0].setView(newCenter, newZoom);
-        }
-        mapArray[1].on('moveend', onMapMoveEnd);
-
-
-        /*
-        function onMapFocus(e) {
-            //console.log(e.target._container.id);
-            console.log("focus" + 1);
-        }
-
-        mapArray[1].on('focus', onMapFocus);
-
-        function onMapBlur(e) {
-            //console.log(e.target._container.id);
-            console.log("blur" + 1);
-        }
-
-        mapArray[1].on('blur', onMapBlur);
-*/
+            //mapArray[0].setView(newCenter, newZoom);*/
+            //console.log("MoveEnd: ");
+        //}
+        //mapArray[1].on('moveend', onMapMoveEnd);
     }
 
 
 
 
 
-
-
-    /*
-    function setListeners() {
-        console.log(">>>>>>>>>>>>>>>>>> set listeners");
-        for (var i = 0; i < mapCount; i++) {
-            var mapDivId = "map" + i;
-            var mapDiv = document.getElementById(mapDivId);
-
-            function onMapFocus(e) {
+    /*        function onMapMoveEnd(e) {
+                handle.remove();
+                console.log(handle);
                 //console.log(e.target._container.id);
-                console.log("focus" + i);
+                console.log("MoveEnd" + 1);
+                var newZoom = mapArray[1].getZoom();
+                var newCenter = mapArray[1].getCenter();
+                mapArray[0].setView(newCenter, newZoom);
             }
+            mapArray[1].on('moveend', onMapMoveEnd);*/
+/* function onMapFocus(e) { //console.log(e.target._container.id); console.log("focus" + 1); } mapArray[1].on('focus', onMapFocus); function onMapBlur(e) { //console.log(e.target._container.id); console.log("blur" + 1); } mapArray[1].on('blur', onMapBlur); */ /* var mapDiv; var handle; var f = 0; var bool1 = true; var bool2; var myBox; var handleOver; var handleOut; var handleUp; var handleDown; var map0 = L.map('map0').setView([51.505, -0.09], 13); L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', { maxZoom: 18, id: 'examples.map-i875mjb7' }).addTo(map0); function onMapMove(e) { //console.log(e.target._container.id); // console.log("moved"); } map0.on('moveend', onMapMove); function onMapFocus0(e) { //console.log(e.target._container.id); console.log("focus0"); } map0.on('focus', onMapFocus0); ///////////////////////////////////////////////////////// var map1 = L.map('map1').setView([51.505, -0.09], 13); L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', { maxZoom: 18, id: 'examples.map-i875mjb7' }).addTo(map1); function onMapMove(e) { //console.log(e.target._container.id); //console.log("moved"); } map1.on('moveend', onMapMove); function onMapFocus1(e) { //console.log(e.target._container.id); console.log("focus1"); } map1.on('focus', onMapFocus1);*/
 
-            handleFocus = mapArray[i].on('focus', onMapFocus);
-
-
-
-
-
-
-        }
-
-    }
-
-    var mapDiv;
-    var handle;
-    var f = 0;
-    var bool1 = true;
-    var bool2;
-    var myBox;
-    var handleOver;
-    var handleOut;
-    var handleUp;
-    var handleDown;
-    var map0 = L.map('map0').setView([51.505, -0.09], 13);
-
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        id: 'examples.map-i875mjb7'
-    }).addTo(map0);
-
-    function onMapMove(e) {
-        //console.log(e.target._container.id);
-        // console.log("moved");
-    }
-    map0.on('moveend', onMapMove);
-
-    function onMapFocus0(e) {
-        //console.log(e.target._container.id);
-        console.log("focus0");
-    }
-    map0.on('focus', onMapFocus0);
-
-
-    /////////////////////////////////////////////////////////
-    var map1 = L.map('map1').setView([51.505, -0.09], 13);
-
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        id: 'examples.map-i875mjb7'
-    }).addTo(map1);
-
-    function onMapMove(e) {
-        //console.log(e.target._container.id);
-        //console.log("moved");
-    }
-    map1.on('moveend', onMapMove);
-
-    function onMapFocus1(e) {
-        //console.log(e.target._container.id);
-        console.log("focus1");
-    }
-    map1.on('focus', onMapFocus1);*/
     </script>
 </body>
 

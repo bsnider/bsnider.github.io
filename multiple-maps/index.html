@@ -136,7 +136,7 @@
                     function mouseUp(ev) {
                         mouseState = "up";
                         console.log('up state you cannot drag now because you are not holding your mouse')
-                        //do not write any code here in this function
+                            //do not write any code here in this function
                     }
 
 
@@ -169,39 +169,6 @@
                             handle.remove();
                         });
                     }
-                    /*                    handleOver = on(document.getElementById(divId), "mousedown", function(e) {
-                        var num = this.id.slice(3, 4);
-                        var hoverBox = "box" + num;
-                        document.getElementById(hoverBox).style.background = "#0ff";
-                        handle = mapArray[num].on("extent-change", setMapExt);
-                    });
-                                        handleUp = on(document.getElementById(divId), "mouseup", function(e) {
-                        console.log("up");
-
-                        handle.remove();
-                        var num = this.id.slice(3, 4);
-                        var hoverBox = "box" + num;
-                        document.getElementById(hoverBox).style.background = "";
-                    });
-                    handleOut = on(document.getElementById(divId), "mouseout", function(e) {
-                        console.log(e);
-                        console.log("out");
-
-                        handle.remove();
-                        var num = this.id.slice(3, 4);
-                        var hoverBox = "box" + num;
-                        document.getElementById(hoverBox).style.background = "";
-                    });*/
-
-
-
-                    /*                } else {
-                    console.log(bool);
-                    var divId = "map" + i + "Div";
-                    handleOver.remove();
-                    handleOut.remove();
-                    handle.remove();
-                */
                 }
             }
         }
@@ -226,52 +193,52 @@
         //***********************************************************
         //***********************************************************
         function modifyMaps() {
-            console.log(">>>>>>>>>> add basemaps and layers");
+                console.log(">>>>>>>>>> add basemaps and layers");
 
-            mapArray[0].on("load", function() {
+                mapArray[0].on("load", function() {
 
-            });
-            ////////////////////////////////////////////////////////////////////////////////////
-            mapArray[1].on("load", function() {
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[1].on("load", function() {
 
-                mapArray[1].setBasemap("satellite");
-                var cities = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0");
-                mapArray[1].addLayer(cities);
-            });
-            ////////////////////////////////////////////////////////////////////////////////////
-            mapArray[2].on("load", function() {
+                    mapArray[1].setBasemap("satellite");
+                    var cities = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0");
+                    mapArray[1].addLayer(cities);
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[2].on("load", function() {
 
-                mapArray[2].setBasemap("hybrid");
-            });
-            ////////////////////////////////////////////////////////////////////////////////////
-            mapArray[3].on("load", function() {
+                    mapArray[2].setBasemap("hybrid");
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[3].on("load", function() {
 
-                mapArray[3].setBasemap("gray");
-                var counties = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2");
-                mapArray[3].addLayer(counties);
-            });
-            ////////////////////////////////////////////////////////////////////////////////////
-            mapArray[4].on("load", function() {
+                    mapArray[3].setBasemap("gray");
+                    var counties = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2");
+                    mapArray[3].addLayer(counties);
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[4].on("load", function() {
 
-                mapArray[4].setBasemap("oceans");
-            });
-            ////////////////////////////////////////////////////////////////////////////////////
-            mapArray[5].on("load", function() {
+                    mapArray[4].setBasemap("oceans");
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[5].on("load", function() {
 
-                mapArray[5].setBasemap("national-geographic");
-            });
-        }
-        //***********************************************************        //***********************************************************
+                    mapArray[5].setBasemap("national-geographic");
+                });
+            }
+            //***********************************************************        //***********************************************************
 
-        mapArray[0].on("load", function() {
-            myBox = document.getElementById("CheckBox");
-            myBox.checked = true;
-            setListeners(myBox.checked);
-            on(dom.byId("CheckBox"), "change", function() {
-                setListeners(myBox.checked);
-                console.log(myBox.checked);
-            });
-        });
+        /*        mapArray[0].on("load", function() {
+                    myBox = document.getElementById("CheckBox");
+                    myBox.checked = true;
+                    setListeners(myBox.checked);
+                    on(dom.byId("CheckBox"), "change", function() {
+                        setListeners(myBox.checked);
+                        console.log(myBox.checked);
+                    });
+                });*/
 
     });
     </script>
