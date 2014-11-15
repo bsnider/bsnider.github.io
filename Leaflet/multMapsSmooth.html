@@ -45,10 +45,11 @@
 
             function onMapMove(e) {
                 var clickedMap = e.target._container.id;
-                console.log(clickedMap);
                 var mapNum = clickedMap.slice(3, 4);
                 var newZoom = mapArray[mapNum].getZoom();
                 var newCenter = mapArray[mapNum].getCenter();
+                /////////////////////////////////////////////////////////////////////////////////
+
                 for (var i = 0; i < mapCount; i++) {
                     //turn off all mapMove events
                     mapArray[i].off('move', onMapMove);
@@ -65,15 +66,7 @@
                 mapArray[i].on('move', onMapMove);
             }
 
-
-
-
-
-            /*            var mapHover = "map" + 0;
-            var mapHoverDiv = document.getElementById(mapHover);
-            mapHoverDiv.addEventListener('mouseenter', function () {
-                console.log(mapHoverDiv);
-            });*/
+            //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         }
     </script>
 </body>
