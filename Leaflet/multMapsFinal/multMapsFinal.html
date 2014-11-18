@@ -93,8 +93,9 @@
                         transparent: true
                     }).addTo(mapArray[i]);
 
-                } else if (i == 3) {
-                    var darkGray = new L.esri.Layers.TiledMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
+                }
+                /*else if (i == 3) {
+                    var darkGray = new L.esri.dynamicMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
                         style: function () {
                             return {
                                 color: "#70ca49",
@@ -132,7 +133,7 @@
                             };
                         }
                     }).addTo(mapArray[i]);
-                }
+                }*/
             }
         }
 
@@ -140,32 +141,53 @@
             console.log(">>>>>>>>>>>>>>>>>> set listeners");
 
             function onMapMove(e) {
+
+                //retrieve the extent of the moved map
                 var clickedMap = e.target._container.id;
                 var mapNum = clickedMap.slice(3, 4);
                 var newZoom = mapArray[mapNum].getZoom();
                 var newCenter = mapArray[mapNum].getCenter();
-                /////////////////////////////////////////////////////////////////////////////////
 
+                //prevent other maps from changing the extent of active map
                 for (var i = 0; i < mapCount; i++) {
-                    // console.log(i);
-
-                    mapArray[i].off('moveend', onMapMove);
+                    //turn off all mapMove events
+                    mapArray[i].off('move', onMapMove);
+                    //move the other maps
                     if (i != mapNum) {
                         mapArray[i].setView(newCenter, newZoom);
                     }
                 }
-                for (var i = 0; i < mapCount; i++) {
-                    mapArray[i].on('moveend', onMapMove);
-                }
+
+                //turn on active maps's mapMove listener after every time the extent changes
+                mapArray[mapNum].on('move', onMapMove);
+
+                //turn on other maps' mapMove listeners after every time the map is panned or clicked
+                mapArray[mapNum].on('blur', function (e) {
+                    for (var i = 0; i < mapCount; i++) {
+                        if (i != mapNum) {
+                            mapArray[i].on('move', onMapMove);
+                        }
+                    }
+                })
+
+                //turn on other maps' mapMove listeners after every time the map is zoomed via the scroll wheel
+                mapArray[mapNum].on('zoomend', function (e) {
+                    for (var i = 0; i < mapCount; i++) {
+                        if (i != mapNum) {
+                            mapArray[i].on('move', onMapMove);
+                        }
+                    }
+                })
             }
 
+            //set initial extent mapMove listener
             for (var i = 0; i < mapCount; i++) {
-                mapArray[i].on('moveend', onMapMove);
+                mapArray[i].on('move', onMapMove);
             }
-
-            //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         }
     </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </body>
 
 </html>
