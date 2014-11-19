@@ -38,7 +38,12 @@
 </style>
 
 <body>
-
+    This sample demonstrates how to add multiple maps with linked extents. The application can be easily modified to increase or decrease the number of maps displayed in the browser.
+    <br />
+    <br />
+    <h4>Connect maps <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true /></h4>
+    </br>
+    </br>
     <div id="map0" style="width: 400px; height: 200px" class="left"></div>
     <div id="map1" style="width: 400px; height: 200px" class="right"></div>
     </br>
@@ -63,12 +68,60 @@
     <script>
         var mapCount = 6;
         var mapArray = [];
-        var handle;
-        var mapCurrent;
+        var lastMap = 0;
 
+         //add a toggle to disconnect/connect the map extents
+        var mapToggle = document.getElementById("ToggleBox");
+        mapToggle.addEventListener('change', onMapMove);
+
+         //create the maps and add their layers
         createMaps();
-        setListeners();
+         //start the maps as connected
+        onMapMove();
 
+        function onMapMove() {
+            //when reconnecting the maps, set extents to last modified map
+            if (mapToggle.checked == true) {
+                for (var i = 0; i < mapCount; i++) {
+                    mapArray[i].on('moveend', onMapMove);
+                    var mapNum = lastMap;
+                    console.log(lastMap);
+                    var newZoom = mapArray[mapNum].getZoom();
+                    var newCenter = mapArray[mapNum].getCenter();
+
+                    //prevent other maps from changing the extent of active map
+                    for (var i = 0; i < mapCount; i++) {
+                        // console.log(i);
+                        mapArray[i].off('moveend', onMapMove);
+                        mapArray[i].setView(newCenter, newZoom);
+                    }
+                }
+                //turn mapMove listeners back on
+                for (var i = 0; i < mapCount; i++) {
+                    mapArray[i].on('moveend', onMapMove);
+                }
+            }
+            //disconnect the maps
+            else {
+                for (var i = 0; i < mapCount; i++) {
+                    mapArray[i].off('moveend', onMapMove);
+                }
+            }
+            console.log(mapToggle.checked);
+        }
+
+         //find last modified map
+        for (var i = 0; i < mapCount; i++) {
+            mapArray[i].on('moveend', function (e) {
+                var clickedMap = e.target._container.id;
+                var mapNum = clickedMap.slice(3, 4);
+                lastMap = mapNum;
+                console.log(mapNum);
+            });
+        }
+
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
         function createMaps() {
             console.log(">>>> create maps");
             for (var i = 0; i < mapCount; i++) {
@@ -93,9 +146,8 @@
                         transparent: true
                     }).addTo(mapArray[i]);
 
-                }
-                /*else if (i == 3) {
-                    var darkGray = new L.esri.dynamicMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
+                } else if (i == 3) {
+                    var darkGray = new L.esri.Layers.TiledMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
                         style: function () {
                             return {
                                 color: "#70ca49",
@@ -133,61 +185,10 @@
                             };
                         }
                     }).addTo(mapArray[i]);
-                }*/
-            }
-        }
-
-        function setListeners() {
-            console.log(">>>>>>>>>>>>>>>>>> set listeners");
-
-            function onMapMove(e) {
-
-                //retrieve the extent of the moved map
-                var clickedMap = e.target._container.id;
-                var mapNum = clickedMap.slice(3, 4);
-                var newZoom = mapArray[mapNum].getZoom();
-                var newCenter = mapArray[mapNum].getCenter();
-
-                //prevent other maps from changing the extent of active map
-                for (var i = 0; i < mapCount; i++) {
-                    //turn off all mapMove events
-                    mapArray[i].off('move', onMapMove);
-                    //move the other maps
-                    if (i != mapNum) {
-                        mapArray[i].setView(newCenter, newZoom);
-                    }
                 }
-
-                //turn on active maps's mapMove listener after every time the extent changes
-                mapArray[mapNum].on('move', onMapMove);
-
-                //turn on other maps' mapMove listeners after every time the map is panned or clicked
-                mapArray[mapNum].on('blur', function (e) {
-                    for (var i = 0; i < mapCount; i++) {
-                        if (i != mapNum) {
-                            mapArray[i].on('move', onMapMove);
-                        }
-                    }
-                })
-
-                //turn on other maps' mapMove listeners after every time the map is zoomed via the scroll wheel
-                mapArray[mapNum].on('zoomend', function (e) {
-                    for (var i = 0; i < mapCount; i++) {
-                        if (i != mapNum) {
-                            mapArray[i].on('move', onMapMove);
-                        }
-                    }
-                })
-            }
-
-            //set initial extent mapMove listener
-            for (var i = 0; i < mapCount; i++) {
-                mapArray[i].on('move', onMapMove);
             }
         }
     </script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </body>
 
 </html>
