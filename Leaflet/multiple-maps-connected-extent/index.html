@@ -14,6 +14,9 @@
     <!-- MapBox -->
     <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/v0.4.0/dist/MarkerCluster.Default.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/v0.4.0/dist/MarkerCluster.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
 
     <!-- custom -->
     <!--<link rel="stylesheet" href="/css/style.css">-->
@@ -65,6 +68,19 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
     <!-- Esri Leaflet -->
     <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js"></script>
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.3"></script>
+    <!-- Include Leaflet.markercluster via rawgit.com, do not use in production -->
+
+    <script src="https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/v0.4.0/dist/leaflet.markercluster.js"></script>
+
+    <!-- Load Clustered Feature Layer from CDN -->
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-clustered-feature-layer/1.0.0-rc.1/esri-leaflet-clustered-feature-layer.js"></script>
+    <!-- Load Geocoder -->
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
+    <!-- Include Leaflet.heat via rawgit.com, do not use in production -->
+    <script src="https://rawgit.com/Leaflet/Leaflet.heat/gh-pages/dist/leaflet-heat.js"></script>
+    <!-- Load Heatmap Feature Layer from CDN -->
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-heatmap-feature-layer/1.0.0-rc.1/esri-leaflet-heatmap-feature-layer.js"></script>
 
 
     <script>
@@ -171,19 +187,34 @@
             console.log(">>>> create maps");
             for (var i = 0; i < mapCount; i++) {
                 mapArray[i] = L.map('map' + i).setView([42.3314, -83.0458], 8);
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+
                 if (i == 0) {
                     L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
                         id: 'examples.map-i875mjb7'
                     }).addTo(mapArray[i]);
-                } else if (i == 1) {
-                    L.esri.basemapLayer("Gray").addTo(mapArray[i]);
-                    L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
-                        layers: 'nexrad-n0r-900913',
-                        format: 'image/png',
-                        transparent: true
-                    }).addTo(mapArray[i]);
-                } else if (i == 2) {
 
+                    //Add geocoder to map
+                    var searchMap = mapArray[i];
+                    var searchControl = new L.esri.Controls.Geosearch({
+                        zoomToResult: true
+                    }).addTo(mapArray[i]);
+                    var results = new L.LayerGroup().addTo(mapArray[i]);
+
+                    searchControl.on('results', function (data) {
+                        results.clearLayers();
+                        results.addLayer(L.marker(data.results[0].latlng));
+                        searchMap.fitBounds(data.results[0].bounds);
+                    });
+
+                } ///////////////////////////////////////////////////////////////////////////////////////////////////
+                else if (i == 1) {
+                    mapArray[i].addLayer(new L.StamenTileLayer("watercolor", {
+                        detectRetina: true
+                    }));
+
+                } ///////////////////////////////////////////////////////////////////////////////////////////////////
+                else if (i == 2) {
                     L.esri.basemapLayer("Imagery").addTo(mapArray[i]);
                     L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
                         layers: 'nexrad-n0r-900913',
@@ -191,7 +222,8 @@
                         transparent: true
                     }).addTo(mapArray[i]);
 
-                } else if (i == 3) {
+                } ///////////////////////////////////////////////////////////////////////////////////////////////////
+                else if (i == 3) {
                     var darkGray = new L.esri.Layers.TiledMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
                         style: function () {
                             return {
@@ -208,21 +240,7 @@
                             };
                         }
                     }).addTo(mapArray[i]);
-
-                } else if (i == 4) {
-                    L.esri.basemapLayer("NationalGeographic").addTo(mapArray[i]);
-                    var basin = new L.esri.dynamicMapLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
-                        style: function () {
-                            return {
-                                color: "blue",
-                                weight: 2
-                            };
-                        }
-                    }).addTo(mapArray[i]);
-
-                } else if (i == 5) {
-                    L.esri.basemapLayer("Topographic").addTo(mapArray[i]);
-                    var cities = new L.esri.FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0", {
+                    var cities = new L.esri.clusteredFeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0", {
                         style: function () {
                             return {
                                 color: "blue",
@@ -230,9 +248,42 @@
                             };
                         }
                     }).addTo(mapArray[i]);
-                    //Create extra blank maps if the user chooses over 3 rows.  To modify the maps, add extra else if statements
-                } else if (i > 5) {
+                    cities.bindPopup(function (feature) {
+                        return L.Util.template('<p><b>{areaname}, {st}</b><br>Population: {pop2000}</p>', feature.properties);
+                    });
+
+                } ///////////////////////////////////////////////////////////////////////////////////////////////////
+                else if (i == 4) {
+                    L.esri.basemapLayer("NationalGeographic").addTo(mapArray[i]);
+                    var USA = new L.esri.dynamicMapLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
+                        style: function () {
+                            return {
+                                color: "blue",
+                                weight: 2
+                            };
+                        },
+                        opacity: .7
+                    }).addTo(mapArray[i]);
+                    USA.bindPopup(function (error, featureCollection) {
+                        if (error || featureCollection.features.length === 0) {
+                            return false;
+                        } else {
+                            return featureCollection.features[0].properties.NAME + ' County';
+                        }
+                    });
+
+                } ///////////////////////////////////////////////////////////////////////////////////////////////////
+                else if (i == 5) {
                     L.esri.basemapLayer("Gray").addTo(mapArray[i]);
+                    L.esri.heatmapFeatureLayer('http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0', {
+                        radius: 12,
+                        opacity: .7
+                    }).addTo(mapArray[i]);
+
+                } ///////////////////////////////////////////////////////////////////////////////////////////////////
+                //Create extra blank maps if the user chooses over 3 rows.  To modify the maps, add extra else if statements
+                else if (i > 5) {
+                    L.esri.basemapLayer("Topographic").addTo(mapArray[i]);
                 }
             }
             //find first modified map
