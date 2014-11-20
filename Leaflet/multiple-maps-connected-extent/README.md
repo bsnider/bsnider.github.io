@@ -2,18 +2,8 @@
 
 This is a sample app with multiple maps that have linked extents.  The application can be easily modified to increase or decrease the number of maps displayed in the browser.
 
-[ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/)
-
-
-
-[dojo/Deferred](http://dojotoolkit.org/reference-guide/1.9/dojo/Deferred.html)
-
 
 ## Features
 
-* Uses deferred statements to manage the flow of asynchronous events
-* Written in using [Leaflet](http://leafletjs.com/index.html) and the [Esri Leaflet Library](https://github.com/Esri/esri-leaflet)
-* Uses the map "load" and "extent-change" events
-* uses version 3.10 of the JS API, but should be able to be upgraded conveniently. 
-
-NOTE: Feel free to update to this repo!
+* Written in pure JavaScript using [Leaflet](http://leafletjs.com/index.html) and the [Esri Leaflet Library](https://github.com/Esri/esri-leaflet)
+* Uses current versions of Leaflet and Esri Leaflet, 0.7.3 and 1.0.0-rc.4, respectively.

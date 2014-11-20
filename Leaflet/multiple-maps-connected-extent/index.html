@@ -1,4 +1,4 @@
-<!--To modify the number of maps, simply add map divs, and change the mapCount.-->
+<!--To modify the default number of maps, simply change the value for the <input id="numOfRows".-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,37 +51,20 @@
     </hr>
     <br /><b>Connect maps</b>
     <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true />
-
     </br>
     <b>How many rows would you like?</b>
     <input type="number" id="numOfRows" value=3 max="10" onkeypress="return enterPress(event)" length=2>
     <input id="executeButton" type="button" value="Go!" onclick="updateRows()" />
     </form>
     </br>
-
     <span id="mapSpan">
-        <span id="row0">
-            <div id="map0" style="width: 45%; height: 200px" class="left"></div>
-            <div id="map1" style="width: 45%; height: 200px" class="right"></div>
-            </br>
-        </span>
-    <span id="row1">
-            <div id="map2" style="width: 45%; height: 200px" class="left"></div>
-            <div id="map3" style="width: 45%; height: 200px" class="right"></div>
-            </br>
-        </span>
-    <span id="row2">
-            <div id="map4" style="width: 45%; height: 200px" class="left"></div>
-            <div id="map5" style="width: 45%; height: 200px" class="right"></div>
-            </br>
-        </span>
     </span>
 
 
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
     <!-- Esri Leaflet -->
-    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.3/esri-leaflet.js"></script>
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js"></script>
 
 
     <script>
@@ -96,11 +79,18 @@
         var mapToggle = document.getElementById("ToggleBox");
         mapToggle.addEventListener('change', onMapMove);
 
+         //create the initial divs based on the input div id=numOfRows
+        updateRows();
          //create the maps and add their layers
         createMaps();
          //start the maps as connected
         onMapMove();
 
+
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+         //if enter key is pressed, update rows
         function enterPress(e) {
             e = e || event;
             var keycode = e.keyCode
@@ -110,9 +100,11 @@
             }
         }
 
+         //update rows from input
         function updateRows() {
             console.log("update");
             rows = document.getElementById("numOfRows").value;
+            //limit the number of rows to 15
             if (rows > 15) {
                 alert("Please choose a number less than 15.");
             } else {
@@ -120,14 +112,10 @@
                 while (parent.firstChild) {
                     parent.removeChild(parent.firstChild);
                 }
-
                 mapCount = rows * 2;
-
                 var spanInnerHtml;
-
                 var mapDivA;
                 var mapDivB;
-                //CREATE NEW OPTION
                 var j = 0;
                 for (var i = 0; i < mapCount; i += 2) {
                     var spanRow = document.createElement("span");
@@ -142,6 +130,8 @@
             }
         }
 
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
         function onMapMove() {
             //when reconnecting the maps, set extents to last modified map
@@ -174,9 +164,9 @@
             console.log(mapToggle.checked);
         }
 
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
         function createMaps() {
             console.log(">>>> create maps");
             for (var i = 0; i < mapCount; i++) {
