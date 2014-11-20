@@ -28,37 +28,54 @@
     <![endif]-->
 </head>
 <style>
+    body {
+        margin: 10px
+    }
     .left {
         float: left;
         width: 125px;
         text-align: right;
-        margin: 2px 10px;
+        margin: 10px 10px;
         display: inline
+    }
+    .right {
+        margin: 10px 10px;
+    }
+    #numOfRows {
+        width: 40px;
     }
 </style>
 
 <body>
     This sample demonstrates how to add multiple maps with linked extents. The application can be easily modified to increase or decrease the number of maps displayed in the browser.
-    <br />
-    <br />
-    <h4>Connect maps <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true /></h4>
-    <input type="text" id="numOfRows" value="6">
-    <input id="execute" type="button" value="Go!" onClick="addRemove();">
+    </hr>
+    <br /><b>Connect maps</b>
+    <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true />
+
     </br>
-    </br>
-    <div id="map0" style="width: 45%; height: 200px" class="left"></div>
-    <div id="map1" style="width: 45%; height: 200px" class="right"></div>
-    </br>
-    <div id="map2" style="width: 45%; height: 200px" class="left"></div>
-    <div id="map3" style="width: 45%; height: 200px" class="right"></div>
+    <b>How many rows would you like?</b>
+    <input type="number" id="numOfRows" value=3 max="10" onkeypress="return enterPress(event)" length=2>
+    <input id="executeButton" type="button" value="Go!" onclick="updateRows()" />
+    </form>
     </br>
 
-    <div id="map4" style="width: 45%; height: 200px" class="left"></div>
-    <div id="map5" style="width: 45%; height: 200px" class="right"></div>
-
-
-
-
+    <span id="mapSpan">
+        <span id="row0">
+            <div id="map0" style="width: 45%; height: 200px" class="left"></div>
+            <div id="map1" style="width: 45%; height: 200px" class="right"></div>
+            </br>
+        </span>
+    <span id="row1">
+            <div id="map2" style="width: 45%; height: 200px" class="left"></div>
+            <div id="map3" style="width: 45%; height: 200px" class="right"></div>
+            </br>
+        </span>
+    <span id="row2">
+            <div id="map4" style="width: 45%; height: 200px" class="left"></div>
+            <div id="map5" style="width: 45%; height: 200px" class="right"></div>
+            </br>
+        </span>
+    </span>
 
 
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
@@ -68,9 +85,12 @@
 
 
     <script>
-        var mapCount = 2 * document.getElementById("numOfRows").value;
+        var rows = document.getElementById("numOfRows").value;
+        var mapCount = rows * 2;
         var mapArray = [];
         var lastMap = 0;
+        var updated = false;
+
 
          //add a toggle to disconnect/connect the map extents
         var mapToggle = document.getElementById("ToggleBox");
@@ -81,13 +101,55 @@
          //start the maps as connected
         onMapMove();
 
+        function enterPress(e) {
+            e = e || event;
+            var keycode = e.keyCode
+            if (keycode === 13) {
+                console.log("enter");
+                updateRows();
+            }
+        }
+
+        function updateRows() {
+            console.log("update");
+            rows = document.getElementById("numOfRows").value;
+            if (rows > 15) {
+                alert("Please choose a number less than 15.");
+            } else {
+                var parent = document.getElementById("mapSpan");
+                while (parent.firstChild) {
+                    parent.removeChild(parent.firstChild);
+                }
+
+                mapCount = rows * 2;
+
+                var spanInnerHtml;
+
+                var mapDivA;
+                var mapDivB;
+                //CREATE NEW OPTION
+                var j = 0;
+                for (var i = 0; i < mapCount; i += 2) {
+                    var spanRow = document.createElement("span");
+                    spanRow.id = "row" + j;
+                    var mapHtml = "<div id=\"map" + i + "\" style=\"width: 45%; height: 200px\" class=\"left\"></div><div id=\"map" + (i + 1) + "\" style=\"width: 45%; height: 200px\" class=\"right\"></div></br>";
+                    spanRow.innerHTML = mapHtml;
+                    parent.appendChild(spanRow);
+                    j = j + 1;
+                }
+                createMaps();
+                onMapMove();
+            }
+        }
+
+
         function onMapMove() {
             //when reconnecting the maps, set extents to last modified map
             if (mapToggle.checked == true) {
                 for (var i = 0; i < mapCount; i++) {
                     mapArray[i].on('moveend', onMapMove);
                     var mapNum = lastMap;
-                    console.log(lastMap);
+                    //console.log(lastMap);
                     var newZoom = mapArray[mapNum].getZoom();
                     var newCenter = mapArray[mapNum].getCenter();
 
@@ -110,16 +172,6 @@
                 }
             }
             console.log(mapToggle.checked);
-        }
-
-         //find last modified map
-        for (var i = 0; i < mapCount; i++) {
-            mapArray[i].on('moveend', function (e) {
-                var clickedMap = e.target._container.id;
-                var mapNum = clickedMap.slice(3, 4);
-                lastMap = mapNum;
-                console.log(mapNum);
-            });
         }
 
 
@@ -188,6 +240,9 @@
                             };
                         }
                     }).addTo(mapArray[i]);
+                    //Create extra blank maps if the user chooses over 3 rows.  To modify the maps, add extra else if statements
+                } else if (i > 5) {
+                    L.esri.basemapLayer("Gray").addTo(mapArray[i]);
                 }
             }
             //find first modified map
@@ -196,7 +251,7 @@
                     var clickedMap = e.target._container.id;
                     var mapNum = clickedMap.slice(3, 4);
                     lastMap = mapNum;
-                    console.log(mapNum);
+                    //console.log(mapNum);
                 });
             }
         }
