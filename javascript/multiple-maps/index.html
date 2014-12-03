@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>TEST</title>
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+    <style>
+        body {
+            margin: 10px
+        }
+        .left {
+            float: left;
+            width: 125px;
+            text-align: right;
+            margin: 10px 10px;
+            display: inline
+        }
+        .right {
+            margin: 10px 10px;
+        }
+        #numOfRows {
+            width: 40px;
+        }
+    </style>
+    <script src="http://js.arcgis.com/3.10/"></script>
+    <script>
+        var mapCount = 6;
+        var mapArray = [];
+        var mapDiv;
+        var handle;
+        var f = 0;
+        var bool1 = true;
+        var bool2;
+        var myBox;
+        var handleOver;
+        var handleOut;
+
+
+        require([
+        "esri/map",
+        "dojo/parser",
+        "dojo/dom",
+        "dojo/on",
+        "dojo/mouse",
+        "esri/layers/FeatureLayer",
+
+
+        "dijit/layout/BorderContainer",
+        "dijit/layout/ContentPane",
+
+        "dojo/domReady!"
+    ], function (
+            Map,
+            parser,
+            dom,
+            on,
+            mouse,
+            FeatureLayer
+        ) {
+            //add a toggle to disconnect/connect the map extents
+            var mapToggle = document.getElementById("ToggleBox");
+            mapToggle.addEventListener('change', onMapMove);
+            parser.parse();
+
+            createMaps();
+            modifyMaps();
+            //setAllListners(bool1);
+
+            //***********************************************************
+            function createMaps() {
+                console.log(">>>> create maps");
+                for (var i = 0; i < mapCount; i++) {
+                    mapArray[i] = "map" + (i);
+                    var mapDiv = "map" + i;
+                    mapArray[i] = new Map(mapDiv, {
+                        center: [-85, 43],
+                        zoom: 5,
+                        basemap: "streets"
+                    });
+                }
+            }
+
+            //***********************************************************
+
+
+
+
+            function onMapMove(evt) {
+                //when reconnecting the maps, set extents to last modified map
+                if (mapToggle.checked == true) {
+                    for (var i = 0; i < mapCount; i++) {
+                        mapArray[i].on('extent-change', onMapMove);
+                        var mapNum = lastMap;
+                        //console.log(lastMap);
+                        var newExtent = evt.extent;
+
+                        //prevent other maps from changing the extent of active map
+                        for (var i = 0; i < mapCount; i++) {
+                            // console.log(i);
+                            mapArray[i].off('extent-change', onMapMove);
+                            mapArray[i].setExtent(newExtent);
+                        }
+                    }
+                    //turn mapMove listeners back on
+                    for (var i = 0; i < mapCount; i++) {
+                        mapArray[i].on('extent-change', onMapMove);
+                    }
+                }
+                //disconnect the maps
+                else {
+                    for (var i = 0; i < mapCount; i++) {
+                        mapArray[i].off('extent-change', onMapMove);
+                    }
+                }
+                console.log(mapToggle.checked);
+            }
+
+
+
+            //***********************************************************
+            function setMapExt(evt) {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>> map was moved");
+                var newExtent = evt.extent;
+                f = f + 1;
+                console.log("number of setMapExt calls: " + f)
+                var selectedDiv = evt.target.container.id;
+                var i = selectedDiv.slice(3, 4);
+                for (var j = 0; j < mapCount; j++) {
+                    if (j != i) {
+                        console.log("change extent for map " + j);
+                        mapArray[j].setExtent(newExtent);
+                    }
+                }
+            }
+
+
+
+
+
+
+            /*function setAllListners(bool) {
+                console.log(bool);
+
+                console.log(">>>>>>>>>>>>>>>>>> set listeners");
+                for (var i = 0; i < mapCount; i++) {
+                    var divId = "map" + i;
+
+                    handleOver = on(document.getElementById(divId), "mouseover", function (e) {
+                        var num = this.id.slice(3, 4);
+                        var hoverBox = "box" + num;
+                        document.getElementById(hoverBox).style.background = "#0ff";
+                        handle = mapArray[num].on("extent-change", setMapExt);
+                    });
+                    handleOut = on(document.getElementById(divId), "mouseout", function (e) {
+                        handle.remove();
+                        var num = this.id.slice(3, 4);
+                        var hoverBox = "box" + num;
+                        document.getElementById(hoverBox).style.background = "";
+                    });
+                }
+
+            }*/
+
+
+
+
+
+            //***********************************************************
+            //***********************************************************
+            function modifyMaps() {
+                console.log(">>>>>>>>>> add basemaps and layers");
+
+                mapArray[0].on("load", function () {
+
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[1].on("load", function () {
+
+                    mapArray[1].setBasemap("satellite");
+                    var cities = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0");
+                    mapArray[1].addLayer(cities);
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[2].on("load", function () {
+
+                    mapArray[2].setBasemap("hybrid");
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[3].on("load", function () {
+
+                    mapArray[3].setBasemap("gray");
+                    var counties = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2");
+                    mapArray[3].addLayer(counties);
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[4].on("load", function () {
+
+                    mapArray[4].setBasemap("oceans");
+                });
+                ////////////////////////////////////////////////////////////////////////////////////
+                mapArray[5].on("load", function () {
+
+                    mapArray[5].setBasemap("national-geographic");
+                });
+            }
+            //***********************************************************        
+            //***********************************************************
+
+            mapArray[0].on("load", function () {
+                onMapMove();
+            });
+            //find first modified map
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].on('moveend', function (e) {
+                    var clickedMap = evt.target.container.id;
+                    var mapNum = clickedMap.slice(3, 4);
+                    lastMap = mapNum;
+                    //console.log(mapNum);
+                });
+            }
+
+        });
+    </script>
+</head>
+
+<body class="claro">
+    This sample demonstrates how to add multiple maps with linked extents. The application can be easily modified to increase or decrease the number of maps displayed in the browser.
+    </hr>
+    <br /><b>Connect maps</b>
+    <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true />
+    </br>
+    <b>How many rows would you like?</b>
+    <input type="number" id="numOfRows" value=3 max="10" onkeypress="return enterPress(event)" length=2>
+    <input id="executeButton" type="button" value="Go!" onclick="updateRows()" />
+    </form>
+    </br>
+    <span id="mapSpan"> 
+    
+    <div id="map0" style="width: 600px; height: 300px"></div>
+    </br>
+    <div id="map1" style="width: 600px; height: 300px"></div>
+    </br>
+    <div id="map2" style="width: 600px; height: 300px"></div>
+    <div id="map3" style="width: 200px; height: 200px"></div>
+    <div id="map4" style="width: 200px; height: 200px"></div>
+    <div id="map5" style="width: 200px; height: 200px"></div>
+</span>
+</body>
+
+</html>

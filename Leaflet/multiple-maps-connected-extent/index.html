@@ -1,4 +1,4 @@
-<!--To modify the default number of maps, simply change the value for the <input id="numOfRows".-->
+<!--To modify the default number of maps, simply change the value for the <input id="numOfMaps".-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,22 +31,13 @@
     <![endif]-->
 </head>
 <style>
-    body {
-        margin: 10px
-    }
-    .left {
-        float: left;
-        width: 125px;
-        text-align: right;
-        margin: 10px 10px;
-        display: inline
-    }
-    .right {
-        margin: 10px 10px;
-    }
-    #numOfRows {
-        width: 40px;
-    }
+body {
+    margin: 10px
+}
+.mapClass {
+    margin: 10px;
+    height: 400px;
+}
 </style>
 
 <body>
@@ -55,9 +46,9 @@
     <br /><b>Connect maps</b>
     <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true />
     </br>
-    <b>How many rows would you like?</b>
-    <input type="number" id="numOfRows" value=3 max="10" onkeypress="return enterPress(event)" length=2>
-    <input id="executeButton" type="button" value="Go!" onclick="updateRows()" />
+    <b>How many maps would you like?</b>
+    <input type="number" id="numOfMaps" value=6 max="10" onkeypress="return enterPress(event)" length=2>
+    <input id="executeButton" type="button" value="Go!" onclick="updateMaps()" />
     </form>
     </br>
     <span id="mapSpan">
@@ -84,222 +75,228 @@
 
 
     <script>
-        var rows = document.getElementById("numOfRows").value;
-        var mapCount = rows * 2;
-        var mapArray = [];
-        var lastMap = 0;
-        var updated = false;
+    var mapCount = document.getElementById("numOfMaps").value;
+    var mapArray = [];
+    var lastMap = 0;
+    var updated = false;
 
 
-         //add a toggle to disconnect/connect the map extents
-        var mapToggle = document.getElementById("ToggleBox");
-        mapToggle.addEventListener('change', onMapMove);
+    //add a toggle to disconnect/connect the map extents
+    var mapToggle = document.getElementById("ToggleBox");
+    mapToggle.addEventListener('change', onMapMove);
 
-         //create the initial divs based on the input div id=numOfRows
-        updateRows();
-         //create the maps and add their layers
-        createMaps();
-         //start the maps as connected
-        onMapMove();
+    //create the initial divs based on the input div id=numOfMaps
+    updateMaps();
+    //create the maps and add their layers
+    createMaps();
+    //start the maps as connected
+    onMapMove();
 
 
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
+    //################################################################################################################################
+    //################################################################################################################################
 
-         //if enter key is pressed, update rows
-        function enterPress(e) {
-            e = e || event;
-            var keycode = e.keyCode
-            if (keycode === 13) {
-                console.log("enter");
-                updateRows();
-            }
+    //if enter key is pressed, update maps
+    function enterPress(e) {
+        e = e || event;
+        var keycode = e.keyCode
+        if (keycode === 13) {
+            console.log("enter");
+            updateMaps();
         }
+    }
 
-         //update rows from input
-        function updateRows() {
-            console.log("update");
-            rows = document.getElementById("numOfRows").value;
-            //limit the number of rows to 15
-            if (rows > 15) {
-                alert("Please choose a number less than 15.");
-            } else {
-                var parent = document.getElementById("mapSpan");
-                while (parent.firstChild) {
-                    parent.removeChild(parent.firstChild);
-                }
-                mapCount = rows * 2;
-                var spanInnerHtml;
-                var mapDivA;
-                var mapDivB;
-                var j = 0;
-                for (var i = 0; i < mapCount; i += 2) {
-                    var spanRow = document.createElement("span");
-                    spanRow.id = "row" + j;
-                    var mapHtml = "<div id=\"map" + i + "\" style=\"width: 45%; height: 200px\" class=\"left\"></div><div id=\"map" + (i + 1) + "\" style=\"width: 45%; height: 200px\" class=\"right\"></div></br>";
-                    spanRow.innerHTML = mapHtml;
-                    parent.appendChild(spanRow);
-                    j = j + 1;
-                }
-                createMaps();
-                onMapMove();
+    //update maps from input
+    function updateMaps() {
+        console.log("update");
+        mapCount = document.getElementById("numOfMaps").value;
+        //limit the number of maps to 15
+        if (mapCount > 10) {
+            alert("Please choose a number less than 15.");
+        } else {
+            var parent = document.getElementById("mapSpan");
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
             }
+            var spanInnerHtml;
+            var mapDivA;
+            var mapDivB;
+            var j = 0;
+            for (var i = 0; i < mapCount; i++) {
+                var spanRow = document.createElement("span");
+                spanRow.id = "row" + j;
+                spanRow.class = "row-fluid";
+                var mapHtml = "<div class=\"col-md-4 col-sm-6 height-css\"><div id=\"map" + i + "\"  class=\"mapClass\"></div></div>";
+
+
+
+
+
+
+
+
+
+                /*                "<div id=\"map" + i + "\" style=\"width: 45%; height: 200px\" class=\"left\"></div><div id=\"map" + (i + 1) + "\" style=\"width: 45%; height: 200px\" class=\"right\"></div></br>";*/
+                spanRow.innerHTML = mapHtml;
+                parent.appendChild(spanRow);
+                j = j + 1;
+            }
+            createMaps();
+            onMapMove();
         }
+    }
 
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
+    //################################################################################################################################
+    //################################################################################################################################
 
-        function onMapMove() {
-            //when reconnecting the maps, set extents to last modified map
-            if (mapToggle.checked == true) {
-                for (var i = 0; i < mapCount; i++) {
-                    mapArray[i].on('moveend', onMapMove);
-                    var mapNum = lastMap;
-                    //console.log(lastMap);
-                    var newZoom = mapArray[mapNum].getZoom();
-                    var newCenter = mapArray[mapNum].getCenter();
+    function onMapMove() {
+        //when reconnecting the maps, set extents to last modified map
+        if (mapToggle.checked == true) {
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].on('moveend', onMapMove);
+                var mapNum = lastMap;
+                //console.log(lastMap);
+                var newZoom = mapArray[mapNum].getZoom();
+                var newCenter = mapArray[mapNum].getCenter();
 
-                    //prevent other maps from changing the extent of active map
-                    for (var i = 0; i < mapCount; i++) {
-                        // console.log(i);
-                        mapArray[i].off('moveend', onMapMove);
-                        mapArray[i].setView(newCenter, newZoom);
-                    }
-                }
-                //turn mapMove listeners back on
+                //prevent other maps from changing the extent of active map
                 for (var i = 0; i < mapCount; i++) {
-                    mapArray[i].on('moveend', onMapMove);
-                }
-            }
-            //disconnect the maps
-            else {
-                for (var i = 0; i < mapCount; i++) {
+                    // console.log(i);
                     mapArray[i].off('moveend', onMapMove);
+                    mapArray[i].setView(newCenter, newZoom);
                 }
             }
-            console.log(mapToggle.checked);
+            //turn mapMove listeners back on
+            for (var i = 0; i < mapCount; i++) {
+                mapArray[i].on('moveend', onMapMove);
+            }
         }
-
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
-         ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        function createMaps() {
-            console.log(">>>> create maps");
+        //disconnect the maps
+        else {
             for (var i = 0; i < mapCount; i++) {
-                mapArray[i] = L.map('map' + i).setView([42.3314, -83.0458], 8);
-                ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-                if (i == 0) {
-                    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-                        id: 'examples.map-i875mjb7'
-                    }).addTo(mapArray[i]);
-
-                    //Add geocoder to map
-                    var searchMap = mapArray[i];
-                    var searchControl = new L.esri.Controls.Geosearch({
-                        zoomToResult: true
-                    }).addTo(mapArray[i]);
-                    var results = new L.LayerGroup().addTo(mapArray[i]);
-
-                    searchControl.on('results', function (data) {
-                        results.clearLayers();
-                        results.addLayer(L.marker(data.results[0].latlng));
-                        searchMap.fitBounds(data.results[0].bounds);
-                    });
-
-                } ///////////////////////////////////////////////////////////////////////////////////////////////////
-                else if (i == 1) {
-                    mapArray[i].addLayer(new L.StamenTileLayer("watercolor", {
-                        detectRetina: true
-                    }));
-
-                } ///////////////////////////////////////////////////////////////////////////////////////////////////
-                else if (i == 2) {
-                    L.esri.basemapLayer("Imagery").addTo(mapArray[i]);
-                    L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
-                        layers: 'nexrad-n0r-900913',
-                        format: 'image/png',
-                        transparent: true
-                    }).addTo(mapArray[i]);
-
-                } ///////////////////////////////////////////////////////////////////////////////////////////////////
-                else if (i == 3) {
-                    var darkGray = new L.esri.Layers.TiledMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
-                        style: function () {
-                            return {
-                                color: "#70ca49",
-                                weight: 2
-                            };
-                        }
-                    }).addTo(mapArray[i]);
-                    var highways = new L.esri.FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/1", {
-                        style: function () {
-                            return {
-                                color: "#70ca49",
-                                weight: 2
-                            };
-                        }
-                    }).addTo(mapArray[i]);
-                    var cities = new L.esri.clusteredFeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0", {
-                        style: function () {
-                            return {
-                                color: "blue",
-                                weight: 4
-                            };
-                        }
-                    }).addTo(mapArray[i]);
-                    cities.bindPopup(function (feature) {
-                        return L.Util.template('<p><b>{areaname}, {st}</b><br>Population: {pop2000}</p>', feature.properties);
-                    });
-
-                } ///////////////////////////////////////////////////////////////////////////////////////////////////
-                else if (i == 4) {
-                    L.esri.basemapLayer("NationalGeographic").addTo(mapArray[i]);
-                    var USA = new L.esri.dynamicMapLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
-                        style: function () {
-                            return {
-                                color: "blue",
-                                weight: 2
-                            };
-                        },
-                        opacity: .7
-                    }).addTo(mapArray[i]);
-                    USA.bindPopup(function (error, featureCollection) {
-                        if (error || featureCollection.features.length === 0) {
-                            return false;
-                        } else {
-                            return featureCollection.features[0].properties.NAME + ' County';
-                        }
-                    });
-
-                } ///////////////////////////////////////////////////////////////////////////////////////////////////
-                else if (i == 5) {
-                    L.esri.basemapLayer("Gray").addTo(mapArray[i]);
-                    L.esri.heatmapFeatureLayer('http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0', {
-                        radius: 12,
-                        opacity: .7
-                    }).addTo(mapArray[i]);
-
-                } ///////////////////////////////////////////////////////////////////////////////////////////////////
-                //Create extra blank maps if the user chooses over 3 rows.  To modify the maps, add extra else if statements
-                else if (i > 5) {
-                    L.esri.basemapLayer("Topographic").addTo(mapArray[i]);
-                }
+                mapArray[i].off('moveend', onMapMove);
             }
-            //find first modified map
-            for (var i = 0; i < mapCount; i++) {
-                mapArray[i].on('moveend', function (e) {
-                    var clickedMap = e.target._container.id;
-                    var mapNum = clickedMap.slice(3, 4);
-                    lastMap = mapNum;
-                    //console.log(mapNum);
+        }
+        console.log(mapToggle.checked);
+    }
+
+    //################################################################################################################################
+    //################################################################################################################################
+
+    function createMaps() {
+        console.log(">>>> create maps");
+        for (var i = 0; i < mapCount; i++) {
+            mapArray[i] = L.map('map' + i).setView([42.3314, -83.0458], 8);
+            ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+            if (i == 0) {
+                L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+                    id: 'examples.map-i875mjb7'
+                }).addTo(mapArray[i]);
+
+                //Add geocoder to map
+                var searchMap = mapArray[i];
+                var searchControl = new L.esri.Controls.Geosearch({
+                    zoomToResult: true
+                }).addTo(mapArray[i]);
+                var results = new L.LayerGroup().addTo(mapArray[i]);
+
+                searchControl.on('results', function(data) {
+                    results.clearLayers();
+                    results.addLayer(L.marker(data.results[0].latlng));
+                    searchMap.fitBounds(data.results[0].bounds);
                 });
+
+            } ///////////////////////////////////////////////////////////////////////////////////////////////////
+            else if (i == 1) {
+                mapArray[i].addLayer(new L.StamenTileLayer("watercolor", {
+                    detectRetina: true
+                }));
+
+            } ///////////////////////////////////////////////////////////////////////////////////////////////////
+            else if (i == 2) {
+                L.esri.basemapLayer("Imagery").addTo(mapArray[i]);
+                L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+                    layers: 'nexrad-n0r-900913',
+                    format: 'image/png',
+                    transparent: true
+                }).addTo(mapArray[i]);
+
+            } ///////////////////////////////////////////////////////////////////////////////////////////////////
+            else if (i == 3) {
+                var darkGray = new L.esri.Layers.TiledMapLayer("http://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer", {
+                    style: function() {
+                        return {
+                            color: "#70ca49",
+                            weight: 2
+                        };
+                    }
+                }).addTo(mapArray[i]);
+                var highways = new L.esri.FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/1", {
+                    style: function() {
+                        return {
+                            color: "#70ca49",
+                            weight: 2
+                        };
+                    }
+                }).addTo(mapArray[i]);
+                var cities = new L.esri.clusteredFeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0", {
+                    style: function() {
+                        return {
+                            color: "blue",
+                            weight: 4
+                        };
+                    }
+                }).addTo(mapArray[i]);
+                cities.bindPopup(function(feature) {
+                    return L.Util.template('<p><b>{areaname}, {st}</b><br>Population: {pop2000}</p>', feature.properties);
+                });
+
+            } ///////////////////////////////////////////////////////////////////////////////////////////////////
+            else if (i == 4) {
+                L.esri.basemapLayer("NationalGeographic").addTo(mapArray[i]);
+                var USA = new L.esri.dynamicMapLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer", {
+                    style: function() {
+                        return {
+                            color: "blue",
+                            weight: 2
+                        };
+                    },
+                    opacity: .7
+                }).addTo(mapArray[i]);
+                USA.bindPopup(function(error, featureCollection) {
+                    if (error || featureCollection.features.length === 0) {
+                        return false;
+                    } else {
+                        return featureCollection.features[0].properties.NAME + ' County';
+                    }
+                });
+
+            } ///////////////////////////////////////////////////////////////////////////////////////////////////
+            else if (i == 5) {
+                L.esri.basemapLayer("Gray").addTo(mapArray[i]);
+                L.esri.heatmapFeatureLayer('http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0', {
+                    radius: 12,
+                    opacity: .7
+                }).addTo(mapArray[i]);
+
+            } ///////////////////////////////////////////////////////////////////////////////////////////////////
+            //Create extra blank maps if the user chooses over 6 maps.  To modify the maps, add extra else if statements
+            else if (i > 5) {
+                L.esri.basemapLayer("Topographic").addTo(mapArray[i]);
             }
         }
+        //find first modified map
+        for (var i = 0; i < mapCount; i++) {
+            mapArray[i].on('moveend', function(e) {
+                var clickedMap = e.target._container.id;
+                var mapNum = clickedMap.slice(3, 4);
+                lastMap = mapNum;
+                //console.log(mapNum);
+            });
+        }
+    }
     </script>
 </body>
 
 </html>
-
-
-
