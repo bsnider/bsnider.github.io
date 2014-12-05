@@ -505,3 +505,15 @@ i {
 .navigation-slide {
     cursor: pointer;
 }
+
+
+
+
+.modal-dialog {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  height: 100%;
+}
