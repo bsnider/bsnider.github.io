@@ -47,7 +47,7 @@ body {
     <input type='checkbox' class='list_item' id='ToggleBox' value=0 checked=true />
     </br>
     <b>How many maps would you like?</b>
-    <input type="number" id="numOfMaps" value=6 max="10" onkeypress="return enterPress(event)" length=2>
+    <input type="number" id="numOfMaps" value=6 max="9" step="1" onkeypress="return enterPress(event)" length=2>
     <input id="executeButton" type="button" value="Go!" onclick="updateMaps()" />
     </form>
     </br>
@@ -119,10 +119,11 @@ body {
     function updateMaps() {
         console.log("update");
         mapCount = document.getElementById("numOfMaps").value;
-        //limit the number of maps to 15
-        if (mapCount > 10) {
-            alert("Please choose a number less than 15.");
-        } else {
+        //limit the number of maps to 9
+        if (mapCount > 10 || mapCount.length > 1) {
+            alert("Please choose an integer less than 10.");
+        } 
+        else {
             var parent = document.getElementById("mapSpan");
             while (parent.firstChild) {
                 parent.removeChild(parent.firstChild);
