@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>slooflirpa</title>
+    <meta charset="utf-8" />
+
+<style> 
+body {
+    overflow: hidden;
+}
+</style> 
+</head> 
+
+<body> 
+<iframe id="video" src="//www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>
+</body> 
+<script type="text/javascript" src="http://code.jquery.com/jquery-compat-git.js"></script>
+<script>
+$(function(){
+  $('#video').css({ width: $(window).innerWidth() + 'px', height: $(window).innerHeight() + 'px' });
+
+  $(window).resize(function(){
+    $('#video').css({ width: $(window).innerWidth() + 'px', height: $(window).innerHeight() + 'px' });
+  });
+});
+</script>
+</html>
