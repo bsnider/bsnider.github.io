@@ -224,3 +224,12 @@ input[type="checkbox"] {
     color: gray;
     font-style: italic;
 }
+.nonActiveFeatureImage {
+    opacity: .3;
+}
+.nonActiveFeatureImage:hover {
+    opacity: .9;
+}
+.feature-row-disabled:hover { 
+    background-color: #A5A5A5;
+}
