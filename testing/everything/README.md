@@ -1,4 +1,0 @@
-bsnider.github.io
-=================
-
-portfolio
