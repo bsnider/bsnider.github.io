@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+  <title>Navmenu Template for Bootstrap</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <!-- ///////////////// -->
+
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+  <link rel="points" type="application/json" href="map1.geojson">
+  <link rel="stylesheet" href="assets/css/leaflet.zoomhome.css" />
+
+
+  <!-- Custom styles for this template -->
+  <link href="navmenu.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/appjasny.css">
+
+
+
+
+</head>
+
+<body>
+  <div class="navmenu navmenu-default navmenu-fixed-left offcanvas-xs offcanvas-sm off-canvas-md">
+    <a class="navmenu-brand visible-md visible-lg" href="#">Project name</a>
+    <ul class="nav navmenu-nav">
+      <!-- <div id="container"> -->
+      <!--///////// Sidebar //////////-->
+      <div id="sidebar">
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="features">
+            <div class="sidebar-table">
+              <table class="table table-hover" id="feature-list">
+                <thead class="hidden">
+                  <tr>
+                    <th>Icon</th>
+                    <tr>
+                      <tr>
+                        <th>Name</th>
+                        <tr>
+                          <tr>
+                            <th>Chevron</th>
+                            <tr>
+                </thead>
+                <tbody class="list"></tbody>
+              </table>
+              <table class="table table-hover" id="feature-listDisabled">
+                <thead class="hidden">
+                  <tr>
+                    <th>Icon</th>
+                    <tr>
+                      <tr>
+                        <th>Name</th>
+                        <tr>
+                          <tr>
+                            <th>Chevron</th>
+                            <tr>
+                </thead>
+                <tbody class="list"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ul>
+  </div>
+
+
+  <!-- //slider button -->
+  <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+    <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".navmenu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Project name</a>
+  </div>
+
+
+  <!-- //main div -->
+  <div class="container">
+
+    <!-- <div class="page-header">
+        <h1>Navmenu Template</h1>
+      </div>
+      <p class="lead">This example shows the navmenu element.</p> -->
+  </div>
+  <!-- /.container -->
+  <div id='map'></div>
+  <!--///////// Popup //////////-->
+  <div class="modal fade modal-openmodal.dark" id="featureModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width:90%">
+      <div class="modal-content" style="height:80%">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title text-primary" id="feature-title"></h4>
+        </div>
+
+        <div class="modal-body">
+          <!--///////// Popup tabs //////////-->
+          <ul class="nav nav-tabs" id="aboutTabs">
+            <li class="active"><a href="#feature-info" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About</a></li>
+            <li><a href="#photos" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Photos</a></li>
+          </ul>
+
+          <!--///////// Popup content tabs //////////-->
+          <div class="tab-content" id="aboutTabsContent">
+
+            <!--///////// Feature info content //////////-->
+            <div class="tab-pane fade active in" id="feature-info"></div>
+            <!--///////// Disclaimer info content //////////-->
+            <div id="photos" class="tab-pane fade text-danger">
+              <!--                 <p>The data provided on this site is for informational and planning purposes only.</p> -->
+              <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                  <li data-target="#myCarousel" data-slide-to="1"></li>
+                  <li data-target="#myCarousel" data-slide-to="2"></li>
+                  <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <!-- <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                      <img src="assets/photos/Jordy1.jpg" alt="Chania">
+                    </div>
+
+                    <div class="item">
+                      <img src="assets/photos/Jordy2.jpg" alt="Chania">
+                    </div>
+
+                    <div class="item">
+                      <img src="assets/photos/Jordy3.jpg" alt="Flower">
+                    </div>
+
+                    <div class="item">
+                      <img src="assets/photos/JDI.JPG" alt="Flower">
+                    </div>
+                  </div> -->
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+  <script src="assets/js/leaflet.zoomhome.js"></script>
+
+  <script src="assets/js/app.js"></script>
+</body>
+
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+  <title>Off Canvas Push Menu Template for Bootstrap</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../dist/css/jasny-bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="navmenu-push.css" rel="stylesheet">
+
+  <!-- Just for debugging purposes. Don't actually copy this line! -->
+  <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="navmenu navmenu-default navmenu-fixed-left offcanvas">
+    <a class="navmenu-brand" href="#">Project name</a>
+    <ul class="nav navmenu-nav">
+      <li><a href="../navmenu/">Slide in</a></li>
+      <li class="active"><a href="./">Push</a></li>
+      <li><a href="../navmenu-reveal/">Reveal</a></li>
+      <li><a href="../navbar-offcanvas/">Off canvas navbar</a></li>
+    </ul>
+    <ul class="nav navmenu-nav">
+      <li><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu navmenu-nav">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">Nav header</li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="navbar navbar-default navbar-fixed-top">
+    <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Off Canvas Push Menu Template</h1>
+    </div>
+    <p class="lead">This example demonstrates the use of the offcanvas plugin with a push effect.</p>
+    <p>You get the push effect by setting the
+      <code>canvas</code> option to 'body'.</p>
+    <p>Also take a look at the example for a navmenu with <a href="../navmenu">slide in effect</a> and <a href="../navmenu-reveal">reveal effect</a>.</p>
+  </div>
+  <!-- /.container -->
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+  <script src="../../../js/offcanvas.js"></script>
+</body>
+
+</html>

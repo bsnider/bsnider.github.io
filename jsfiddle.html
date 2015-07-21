@@ -1,0 +1,153 @@
+<html>
+
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Bootstrap Google Map Framework - jsFiddle demo</title>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.js"></script>
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="assets/css/appJsFiddle.css">
+
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+  <link rel="points" type="application/json" href="map1.geojson">
+  <link rel="stylesheet" href="assets/css/leaflet.zoomhome.css"/>
+  <!-- Example data. -->
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+
+
+  <style type="text/css">
+    #sidebar {
+      background-color: red;
+
+      position: fixed;
+      top: 60px;
+      left: -180px;
+      width: 200px;
+    }
+
+    #sidebar-content {
+      width: 90%;
+      float: left;
+      background-color: white;
+    }
+
+    #toggleSidebar {
+      background-color: gray;
+      float: right;
+      height: 20px;
+      width: 20px;
+      margin-top: 20px;
+    }
+  </style>
+
+  <script type="text/javascript">
+    $(window).load(function() {
+      $.panels = 1;
+      function sidebar(panels) {
+        $.panels = panels;
+        if (panels === 1) {
+          $('#sidebar').animate({
+            left: -180,
+          });
+        } else if (panels === 2) {
+          $('#sidebar').animate({
+            left: 20,
+          });
+          $('#sidebar').height($(window).height() - 50);
+        }
+      };
+
+      $('#toggleSidebar').click(function() {
+        if ($.panels === 1) {
+          $('#toggleSidebar i').addClass('icon-chevron-left');
+          $('#toggleSidebar i').removeClass('icon-chevron-right');
+          return sidebar(2);
+        } else {
+          $('#toggleSidebar i').removeClass('icon-chevron-left');
+          $('#toggleSidebar i').addClass('icon-chevron-right');
+          return sidebar(1);
+        }
+      });
+
+
+    });
+  </script>
+
+</head>
+
+<body>
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+
+      <!-- mobile nav items -->
+      <div class="navbar-header">
+          <div class="navbar-icon-container">
+          <div class="btn-group visible-sm visible-xs pull-right" id="nav-btn">
+              <a href="#" class="navbar-icon btn btn-default navbar-btn dropdown-toggle"><i class="fa fa-bars fa-lg white"></i><span class=""></span></a>
+          </div>
+          <!-- POI dropdown -->
+          <div class="btn-group visible-sm visible-xs" id="toc-btn-sm">
+              <a href="#" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-list fa-lg white"></i><span class=""></span></a>
+          </div>
+          <!-- brand -->
+          <div class="visible-sm visible-xs navbar-center navbar-brand"><a class="navbar-brand" href="http://bradleyjsnider.com" id="home-btn">BradleyJSnider.com</a></div>
+        </div>
+      </div>
+      <!-- Collect the nav links, forms, and other content for desktop browser and dropdown items -->
+      <div class="collapse navbar-collapse" id="navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-left">
+              <!-- brand -->
+              <li class="hidden-xs hidden-sm"><a class="navbar-brand" href="http://bradleyjsnider.com" data-toggle="collapse" data-target=".navbar-collapse.in" id="home-btn">BradleyJSnider.com</a></li>
+              <!-- about -->
+              <li class="hidden-xs hidden-sm"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+              <!-- POI -->
+              <li class=""><a href="#" data-toggle="collapse" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;Points of Interest</a></li>
+              <!-- resume -->
+              <li class=""><a href="Snider_Bradley_Resume_Web.pdf" data-toggle="collapse" target="_blank" data-target=".navbar-collapse.in" id="resume-btn"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download Resume</a></li>
+          </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+  </div>
+
+  <div class="container-fluid">
+      <div class="row-fluid">
+      <div id="" >
+        <div id="mapDiv" style="height: 100%; width: 100% display: block; position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /container -->
+  <div id="sidebar">
+    <!--Sidebar content-->
+    <div id="sidebar-content">
+      <a class="accordion-toggle-small" data-toggle="collapse" data-parent="#accordianParent" href="#sectionOne">
+                    Section One
+                </a></br>
+      <a class="accordion-toggle-small" data-toggle="collapse" data-parent="#accordianParent" href="#sectionTwo">
+                    Section Two
+                </a></br>
+      <a class="accordion-toggle-small" data-parent="#accordianParent" data-toggle="collapse" href="#sectionThree">
+                    Section Three
+                </a>
+      </br>
+    </div>
+    <a id="toggleSidebar" href="#" class="toggles"><i class="icon-chevron-right"></i></a>
+  </div>
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <!-- ///////////////// -->
+
+    <!-- ///////////////// -->
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <script src="assets/js/leaflet.zoomhome.js"></script>
+
+</body>
+</html>

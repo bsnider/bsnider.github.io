@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Leaflet Markercluster</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <!-- ///////////////// -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.3.0/ekko-lightbox.min.css" rel="stylesheet">
+
+  <!-- ///////////////// -->
+
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+  <link rel="points" type="application/json" href="map1.geojson">
+  <link rel="stylesheet" href="assets/css/leaflet.zoomhome.css" />
+  <link rel="stylesheet" href="assets/css/leaflet.customcontrol.css" />
+  <link rel="stylesheet" href="assets/css/easy-button.css" />
+  <!-- Example data. -->
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+  <link rel="stylesheet" href="assets/css/appOrig.css">
+  <link rel="stylesheet" href="assets/css/ekko-lightbox.css">
+  <link rel="stylesheet" href="assets/css/dark.css">
+  <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.2/release/featherlight.min.css" type="text/css" rel="stylesheet" title="Featherlight Styles" />
+
+
+  <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
+   <script type="text/javascript">
+    $(window).load(function(){
+        $('#aboutModal').modal('show');
+    });
+</script>
+</head>
+
+<body>
+  <!--///////// Navigation //////////-->
+  <!--   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="navbar-icon-container">
+          <a class="navbar-brand text-center navbar-brand-centered"  href="http://bradleyjsnider.com">BradleyJSnider.com</a>
+        </div>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+          <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;Points of Interest</a></li>
+          <li><a href="Snider_Bradley_Resume_Web.pdf" data-toggle="collapse" data-target=".navbar-collapse.in" target="_blank" id="resume-btn"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download Resume</a></li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+
+      <!-- mobile nav items -->
+      <div class="navbar-header">
+        <!-- default navbar-toggle -->
+        <!--         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button> -->
+        <!-- scratch navbar toggle -->
+        <div class="navbar-icon-container">
+          <div class="btn-group visible-sm visible-xs pull-right" id="nav-btn">
+            <a href="#" class="navbar-icon btn btn-default navbar-btn dropdown-toggle"><i class="fa fa-bars fa-lg white"></i><span class=""></span></a>
+          </div>
+          <!-- brand -->
+          <div class="visible-sm visible-xs navbar-center navbar-brand"><a class="navbar-brand" href="http://bradleyjsnider.com" id="home-btn">BradleyJSnider.com</a></div>
+        </div>
+      </div>
+      <!-- Collect the nav links, forms, and other content for desktop browser and dropdown items -->
+      <div class="collapse navbar-collapse" id="navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-left">
+          <!-- brand -->
+          <li class="hidden-xs hidden-sm"><a class="navbar-brand" href="http://bradleyjsnider.com" data-toggle="collapse" data-target=".navbar-collapse.in" id="home-btn">BradleyJSnider.com</a></li>
+          <!-- about -->
+          <!-- <li class=""><a href="http://distilleryimage10.ak.instagram.com/85c5d0e4039411e3bd9b22000aa82186_7.jpg" data-toggle="lightbox" data-target=".navbar-collapse.in" data-gallery="remoteload" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li> -->
+          <li class=""><a href="" data-toggle="lightbox" data-target=".navbar-collapse.in" data-gallery="remoteload" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+          <!-- contact -->
+          <li class=""><a href="" data-toggle="collapse" data-target=".navbar-collapse.in" id="contact-btn"><i class="fa fa-envelope-o white"></i>&nbsp;&nbsp;Contact</a></li>
+          <!-- resume -->
+          <li class=""><a href="SniderResumeWeb.pdf" data-toggle="collapse" target="_blank" data-target=".navbar-collapse.in" id="resume-btn"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download Resume</a></li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+  </div>
+
+  <div>
+
+    <!-- load local page -->
+    <!-- <button class="col-sm-3" href="./remote/page1.html" data-title="Page 1" data-toggle="lightbox" data-parent="" data-gallery="remoteload">Open up local Page 1</button> -->
+
+    <!-- load image -->
+    <!-- <a href="http://distilleryimage10.ak.instagram.com/85c5d0e4039411e3bd9b22000aa82186_7.jpg" data-parent="" data-toggle="lightbox" data-gallery="remoteload" class="col-sm-3">
+    </a> -->
+
+    <!-- load webpage-->
+    <!-- <p hidden class="col-sm-3"><a href="http://news.bbc.co.uk" data-title="BBC News" data-toggle="lightbox" data-parent="" data-gallery="remoteload">Open up BBC news</a></p> -->
+
+  </div>
+
+
+  <!-- <div id="container"> -->
+  <!--///////// Sidebar //////////-->
+  <div id="sidebar">
+    <div class="sidebar-wrapper">
+      <div class="panel
+    panel-default" id="features">
+        <div class="sidebar-table">
+          <table class="table table-hover" id="feature-list">
+            <thead class="hidden">
+            </thead>
+            <tbody class="list"></tbody>
+          </table>
+          <table class="table
+    table-hover" id="feature-listDisabled">
+            <thead class="hidden">
+            </thead>
+            <tbody class="list"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--///////// Map //////////-->
+  <div id="map">
+  </div>
+
+  <!-- </div> -->
+  <!--///////// Loading //////////-->
+  <!-- <div id="loading">
+    <div class="loading-indicator">
+      <div class="progress progress-striped active">
+        <div class="progress-bar progress-bar-info progress-bar-full"></div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+
+  <!--///////// About //////////-->
+  <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="color:black">
+
+
+
+          <!-- <div> -->
+
+            <!-- load local page -->
+            <!-- <button class="col-sm-3" href="./remote/page1.html" data-title="Page 1" data-toggle="lightbox" data-parent="" data-gallery="remoteload">Open up local Page 1</button> -->
+
+            <!-- load image -->
+            <!-- <a href="http://distilleryimage10.ak.instagram.com/85c5d0e4039411e3bd9b22000aa82186_7.jpg" data-parent="" data-toggle="lightbox" data-gallery="remoteload" class="col-sm-3">
+            </a> -->
+
+            <!-- load webpage-->
+            <!-- <p hidden class="col-sm-3"><a href="http://bradleyjsnider.com" data-title="BBC News" data-toggle="lightbox" data-parent="" data-gallery="remoteload">Open up BBC news</a></p> -->
+
+
+            <!-- <a href="SniderResumeWeb.pdf" data-parent="" data-toggle="lightbox" data-gallery="remoteload" class="col-sm-3"> -->
+            <!-- </a> -->
+          <!-- </div> -->
+
+
+
+          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Welcome!</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <p>Thanks for stopping by!</p>
+        <!-- </br> -->
+          <p>Please check out my website to learn more about my personal and professional life.</p>
+
+          <p>The interactive map shows a glimpse into my educational and professional journey.</p>
+
+          <p>I am currently an SDK Support Analyst at <a href="http://www.esri.com">Esri</a>.</p>
+
+          <p>My journey has taken me from Metro Detroit > Ann Arbor > Detroit > Tucson > Redlands.</p>
+
+          <p>I am a lover of Detroit, tech geek, map nerd, environmentalist, hiker, biker, and Michigan Football fanatic.</p>
+          <p style="color:blue"><em>Go Blue!</em></p>
+          <p>Brad</p>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+
+
+
+
+  <div class="modal fade" id="contactModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header" style="color:black">
+          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Please contact me!</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="row centered">
+            <div class="col-lg-8 col-lg-offset-2 w tooltip-demo"><p style="text-align:center">
+              <a data-toggle="tooltip" title="LinkedIn" href="http://www.linkedin.com/in/bradleysnider"><i class="fa fa-linkedin fa-3x"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+              <a data-toggle="tooltip" title="Twitter" href="http://twitter.com/bjsnider"><i class="fa fa-twitter fa-3x"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+              <a data-toggle="tooltip" title="Email Me!" href="mailto:brad@bradleyjsnider.com"><i class="fa fa-envelope fa-3x"></i></a>
+            </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+
+
+
+
+
+
+  <!--///////// Popup //////////-->
+  <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="color:black">
+          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title text-primary" id="feature-title" style="color:black"></h4>
+        </div>
+
+        <div class="modal-body" id="feature-info">
+          <!--///////// Popup tabs //////////-->
+          <!-- <ul class="nav nav-tabs" id="aboutTabs">
+            <li class="active"><a href="#feature-info" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About</a></li>
+            <li><a href="#photos" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Photos</a></li>
+          </ul> -->
+
+          <!--///////// Popup content tabs //////////-->
+          <!-- <div class="content" id="feature-info"> -->
+
+            <!--///////// Feature info content //////////-->
+            <!-- <div class="tab-pane fade active in" id="feature-info"></div> -->
+            <!--///////// Disclaimer info content //////////-->
+            <!-- <div id="photos" class="tab-pane fade text-danger"> -->
+              <!--                 <p>The data provided on this site is for informational and planning purposes only.</p> -->
+              <!-- <div id="myCarousel" class="carousel slide" data-ride="carousel"> -->
+                <!-- Indicators -->
+                <!-- <ol class="carousel-indicators">
+                  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                  <li data-target="#myCarousel" data-slide-to="1"></li>
+                  <li data-target="#myCarousel" data-slide-to="2"></li>
+                  <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol> -->
+
+                <!-- Wrapper for slides -->
+                <!-- <div class="carousel-inner" role="listbox">
+                  <div class="item active">
+                    <img src="assets/photos/Jordy1.jpg" alt="Chania">
+                  </div>
+
+                  <div class="item">
+                    <img src="assets/photos/Jordy2.jpg" alt="Chania">
+                  </div>
+
+                  <div class="item">
+                    <img src="assets/photos/Jordy3.jpg" alt="Flower">
+                  </div>
+
+                  <div class="item">
+                    <img src="assets/photos/JDI.JPG" alt="Flower">
+                  </div>
+                </div> -->
+
+                <!-- Left and right controls -->
+                <!-- <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a> -->
+              <!-- </div>
+            </div> -->
+          <!-- </div> -->
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.3.0/ekko-lightbox.min.js"></script>
+
+
+  <!-- ///////////////// -->
+
+  <!-- ///////////////// -->
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+  <script src="assets/js/leaflet.zoomhome.js"></script>
+  <script src="assets/js/easy-button.js"></script>
+  <script src="assets/js/ekko-lightbox.js"></script>
+
+
+  <script src="assets/js/leaflet.customcontrol.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="//cdn.rawgit.com/noelboss/featherlight/1.3.2/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+
+</html>
