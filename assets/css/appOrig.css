@@ -1,3 +1,57 @@
+/***** Modal *****/
+
+.modal-content {
+	background: #3a3a3a;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+	border: 0;
+	text-align: left;
+}
+
+.modal-header {
+	padding: 25px 25px 15px 25px;
+	background: #333;
+	border: 0;
+	-moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0;
+	color: #888;
+}
+
+.modal-header .close {
+	font-size: 36px;
+	color: #eee;
+	font-weight: 300;
+	text-shadow: none;
+	opacity: 1;
+}
+
+.modal-title {
+	margin-bottom: 10px;
+	line-height: 30px;
+	color: #F05B5B !important;
+}
+
+.modal-body {
+	padding: 25px 25px 30px 25px;
+	background: #3a3a3a;
+	text-align: left;
+	-moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
+}
+
+.modal-body img {
+	margin-bottom: 15px;
+}
+
+.modal-body form textarea {
+	height: 100px;
+}
+
+.modal-body form .input-error {
+	border-color: #fd625e;
+}
+
+body {
+color: #F05B5B;
+}
+
 /*#sidebar1 {
   position: fixed;
   top: 60px;
@@ -175,6 +229,9 @@ input[type="radio"], input[type="checkbox"] {
   top: 0px;
   bottom: 0px;
   overflow: auto;
+  background-color: #3D3D3D;
+  color: #F05B5B;
+
 }
 .leaflet-control-layers {
   overflow: auto;
@@ -188,6 +245,9 @@ input[type="radio"], input[type="checkbox"] {
 }
 .table {
   margin-bottom: 0px;
+}
+.tr {
+  background-color: #A0A0A0
 }
 .navbar .navbar-brand {
   font-weight: bold;
@@ -309,7 +369,15 @@ input[type="radio"], input[type="checkbox"] {
   opacity: .9;
 }
 .feature-row-disabled:hover {
-  background-color: blue;
+  background-color: #FFFFFF;
+/*background-color: #A5A5A5;*/
+}
+.feature-row-disabled {
+  background-color: #FFFFFF;
+/*background-color: #A5A5A5;*/
+}
+.feature-row:hover {
+  background-color: #7B7B7B;
 /*background-color: #A5A5A5;*/
 }
 .leaflet-marker-icon {

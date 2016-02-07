@@ -1,6 +1,7 @@
     body {
         margin: 0;
-        ` padding: 0;
+        padding: 0;
+        background-color: #2523A6 !important;
     }
 
     #map {
@@ -31,7 +32,7 @@
         width: 200px;
         bottom: 0;
         overflow-x: auto;
-        background: #fff;
+        background: #2523A6 !important;
         margin: 0;
         padding: 5px;
     }
@@ -43,7 +44,7 @@
         width: 200px;
         bottom: 0;
         overflow-x: auto;
-        background: #fff;
+        background: #2523A6 !important;
         margin: 0;
         padding: 5px;
     }
@@ -56,7 +57,7 @@
     }
 
     #legendVis li:hover {
-        background: #eee;
+        background: #2523A6;
     }
 
     #legendNonVis {
@@ -66,7 +67,7 @@
         width: 200px;
         bottom: 0;
         overflow-x: auto;
-        background: #fff;
+        background: #2523A6  !important;
         margin: 0;
         padding: 5px;
     }
@@ -78,7 +79,7 @@
     }
 
     #legendNonVis li:hover {
-        background: #eee;
+        background: #3D3D3D;
     }
     /*html,
 body,
