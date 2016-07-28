@@ -14,8 +14,6 @@ $(document).ready(function ($) {
 });
 
 
-
-
 $('#map').click(function() {
   $(".navbar-collapse").collapse('hide');
 });
@@ -86,81 +84,19 @@ function sidebarClick(id) {
   }
 }
 
-
-
-// highlight feature on sidebar hover
-// $(document).on("mouseover", ".feature-row", function(e) {
-//   highlight.clearLayers().addLayer(L.circleMarker([$(this).attr("lat"), $(this).attr("lng")], highlightStyle));
-// });
-// $(document).on("mouseout", ".feature-row", clearHighlight);
-
-
 // mapBox basemap and access token
 L.mapbox.accessToken = 'pk.eyJ1IjoiYmpzbmlkZXIiLCJhIjoiMjhkOWI0ZjM1MDZiMGQzYmY3YTU5ZWU1OTM2YjU1NDgifQ.paiaL8scv6VHN53ufTkpIQ';
-/*var accessToken = 'pk.eyJ1IjoiYmpzbmlkZXIiLCJhIjoiMjhkOWI0ZjM1MDZiMGQzYmY3YTU5ZWU1OTM2YjU1NDgifQ.paiaL8scv6VHN53ufTkpIQ';
-var mapBoxDark = L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=' + accessToken, {
-  attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
-});*/
-
-// create the highlight layer and its properties
-// var highlight = L.geoJson(null);
-// var highlightStyle = {
-//   stroke: false,
-//   fillColor: "#00FFFF",
-//   fillOpacity: 0.2,
-//   radius: 20,
-//   iconAnchor: [-100, -80]
-// };
-
-// function clearHighlight() {
-//   highlight.clearLayers();
-// }
-
-
-// var customControl = L.Control.extend({
-//     options: { position: 'topleft' },
-//     onAdd: function (map) {
-//         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-//         container.style.backgroundColor = 'white';
-//         container.style.backgroundImage = 'url(http://t1.gstatic.com/images?q=tbn:ANd9GcR6FCUMW5bPn8C4PbKak2BJQQsmC-K9-mbYBeFZm1ZM2w2GRy40Ew)';
-//         container.style.backgroundSize = '30px 30px';
-//         container.style.width = '30px';
-//         container.style.height = '30px';
-//         container.onclick = function () {
-//             console.log('buttonClicked');
-//         };
-//         return container;
-//     }
-// });
-// var map;
-// var readyState = function (e) {
-//   map = L.mapbox.map('map','mapbox.dark', {
-//     zoomControl: false
-//   })
-//     .setView([39.828175, -98.5795], 3);
-// };
-// window.addEventListener('DOMContentLoaded', readyState);
-//       //@ sourceURL=pen.js
-//
-
-
-
 
 // create the map
-map = L.mapbox.map('map', 'mapbox.dark', {
-    zoomControl: false,
-    home: true
-  })
-  .setView([39.828175, -98.5795], 3);
-// var customControl = L.Control.customControl({
-//     position: 'topleft'
-//   })
-//   .addTo(map);
 
+var map = L.map('map',{
+  zoomControl: false
+}).setView([39.828175, -98.5795], 3);
 
-console.log($(window).width());
+//L.esri.basemapLayer('Gray').addTo(map);
+L.esri.tiledMapLayer("https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer").addTo(map);
+
 if ($(window).width() > 768){
-  console.log($(window).width());
 
   var stateChangingButton = L.easyButton({
     states: [{
