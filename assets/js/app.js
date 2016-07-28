@@ -93,8 +93,9 @@ var map = L.map('map',{
   zoomControl: false
 }).setView([39.828175, -98.5795], 3);
 
-//L.esri.basemapLayer('Gray').addTo(map);
+L.esri.basemapLayer('Gray').addTo(map);
 L.esri.tiledMapLayer("https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer").addTo(map);
+
 
 if ($(window).width() > 768){
 
