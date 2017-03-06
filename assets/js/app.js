@@ -223,7 +223,7 @@ var zoomHome = L.Control.zoomHome({
   .addTo(map);
 
 // wait until geojson is converted to feature layer
-var FL = L.mapbox.featureLayer('assets/data/data.geojson').on('ready', function(e) {
+var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function(e) {
 //var FL = L.mapbox.featureLayer('http://localhost/cluster-scratch/assets/data/data.geojson').on('ready', function(e) {
 
   // create and add cluster layer instance to map
@@ -239,7 +239,14 @@ var FL = L.mapbox.featureLayer('assets/data/data.geojson').on('ready', function(
   e.target.eachLayer(function(feature1, layer) {
     var feature = feature1.feature;
     if (feature.properties) {
-      if (feature.properties.bullet6) {
+      if (feature.properties.bullet8) {
+        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li><li>" + feature.properties.bullet7 +  "</li><li>" + feature.properties.bullet8 + "</li></ul></td></tr>" + "<table>";
+
+      }else if (feature.properties.bullet7) {
+          var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li><li>" + feature.properties.bullet7 + "</li></ul></td></tr>" + "<table>";
+
+
+      }else if (feature.properties.bullet6) {
         var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li></ul></td></tr>" + "<table>";
         // var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li></ul></td></tr>" + "<table>";
 
@@ -258,8 +265,8 @@ var FL = L.mapbox.featureLayer('assets/data/data.geojson').on('ready', function(
       } else {
         var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<table>";
       }
-      var title = feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.name + "</a>";
-      var title = feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.name + "&nbsp<i class='fa fa-link'></i></a>"
+      var title = feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.alias + "</a>";
+      var title = feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.alias + "&nbsp<i class='fa fa-link'></i></a>"
       feature1.on({
         click: function(e) {
           $("#feature-title").html(title);
@@ -281,14 +288,14 @@ var FL = L.mapbox.featureLayer('assets/data/data.geojson').on('ready', function(
 
     // highlight clicked feature
     clusterGroup.on('click', function(f) {
-      if (f.layer.feature.properties.shortName == layer.feature.properties.shortName) {
+      if (f.layer.feature.properties.shortAlias == layer.feature.properties.shortAlias) {
         // highlight.clearLayers().addLayer(L.circleMarker([layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]], highlightStyle));
       }
     });
 
     // create the legend
     var afa =
-      $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortName + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+      $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
   });
 
   function onmove() {
@@ -304,10 +311,10 @@ var FL = L.mapbox.featureLayer('assets/data/data.geojson').on('ready', function(
       $("#feature-list tbody").clear;
       if (map.getBounds().contains(layer.getLatLng())) {
         var afa =
-          $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortName + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+          $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
       } else {
         var afa1 =
-          $("#feature-listDisabled tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" style="background-color: #121111;" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" class="nonActiveFeatureImage" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name nonActiveFeatureText">' + layer.feature.properties.shortName + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+          $("#feature-listDisabled tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" style="background-color: #121111;" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" class="nonActiveFeatureImage" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name nonActiveFeatureText">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
       }
     });
   }
