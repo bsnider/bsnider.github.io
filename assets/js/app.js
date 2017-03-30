@@ -1,7 +1,7 @@
 var map, item, clusterGroup;
 
 
-$(document).ready(function ($) {
+$(document).ready(function($) {
 
   // delegate calls to data-toggle="lightbox"
   $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
@@ -89,15 +89,15 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYmpzbmlkZXIiLCJhIjoiMjhkOWI0ZjM1MDZiMGQzYmY3Y
 
 // create the map
 
-var map = L.map('map',{
+var map = L.map('map', {
   zoomControl: false
 }).setView([39.828175, -98.5795], 3);
 
-L.esri.basemapLayer('Gray').addTo(map);
+//L.esri.basemapLayer('Gray').addTo(map);
 L.esri.tiledMapLayer("https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer").addTo(map);
 
 
-if ($(window).width() > 768){
+if ($(window).width() > 768) {
 
   var stateChangingButton = L.easyButton({
     states: [{
@@ -122,8 +122,7 @@ if ($(window).width() > 768){
       }
     }]
   });
-}
-else{
+} else {
   var stateChangingButton = L.easyButton({
     states: [{
       stateName: 'vis',
@@ -150,7 +149,7 @@ else{
 
 }
 
-  stateChangingButton.addTo(map);
+stateChangingButton.addTo(map);
 
 
 
@@ -161,7 +160,7 @@ var zoomHome = L.Control.zoomHome({
 
 // wait until geojson is converted to feature layer
 var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function(e) {
-//var FL = L.mapbox.featureLayer('http://localhost/cluster-scratch/assets/data/data.geojson').on('ready', function(e) {
+  //var FL = L.mapbox.featureLayer('http://localhost/cluster-scratch/assets/data/data.geojson').on('ready', function(e) {
 
   // create and add cluster layer instance to map
   clusterGroup = new L.MarkerClusterGroup({
@@ -174,98 +173,116 @@ var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function
 
 
   e.target.eachLayer(function(feature1, layer) {
-    var feature = feature1.feature;
-    if (feature.properties) {
-      if (feature.properties.bullet8) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li><li>" + feature.properties.bullet7 +  "</li><li>" + feature.properties.bullet8 + "</li></ul></td></tr>" + "<table>";
+      var feature = feature1.feature;
+      if (feature.properties) {
+        var name = feature.properties.shortAlias;
+        var date = feature.properties.timespan;
+        var location = feature.properties.city;
+        var position = feature.properties.position;
 
-      }else if (feature.properties.bullet7) {
-          var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li><li>" + feature.properties.bullet7 + "</li></ul></td></tr>" + "<table>";
+        var courseList = "";
+        var subjectList = "";
+        var panelBullets = "";
+        for (i = 1; i < 7; i++) {
+          var currentBullet = feature.properties['bullet' + i];
+          if (currentBullet != null) {
+            var listItem = "<p class='popup-bullet'><i class='fa fa-location-arrow fa-lg' aria-hidden='true'></i>  " + currentBullet + "</p>";
+            panelBullets = panelBullets + listItem;
+          }
+        }
+        if (name == "University of Michigan") {
+          var courseArray = ["Environmental and Sustainable Engineering", "Environmental Justice", "Food, Land, and Society", "Conservation of Biological Diversity"];
 
+          //arrayUtils.forEach(courseArray, function(course){
+          for (i = 0; i < courseArray.length; i++) {
+            var listItem;
+            listItem = "<p class='popup-course'><i class='fa fa-book fa-lg' aria-hidden='true'></i> " + courseArray[i] + "</p>";
+            courseList = courseList + listItem;
+          }
+          //});
+          courseList = "Influential courses:" + courseList;
 
-      }else if (feature.properties.bullet6) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li></ul></td></tr>" + "<table>";
-        // var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li><li>" + feature.properties.bullet6 + "</li></ul></td></tr>" + "<table>";
+          console.log(courseList);
+          //var relevant courses = "Environmental and Sustainable Engineering"
+        } else if (name == "University of Arizona") {
+          var courseArray = ["Remote sensing", "Geodata management", "Cartography", "Spatial statistics", "Scripting and Web GIS"];
 
-
-
-      } else if (feature.properties.bullet5) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li><li>" + feature.properties.bullet5 + "</li></ul></td></tr>" + "<table>";
-      } else if (feature.properties.bullet4) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li><li>" + feature.properties.bullet4 + "</li></ul></td></tr>" + "<table>";
-      } else if (feature.properties.bullet3) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li><li>" + feature.properties.bullet3 + "</li></ul></td></tr>" + "<table>";
-      } else if (feature.properties.bullet2) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li><li>" + feature.properties.bullet2 + "</li></ul></td></tr>" + "<table>";
-      } else if (feature.properties.bullet1) {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<tr><th>Description</th><td><ul><li>" + feature.properties.bullet1 + "</li></ul></td></tr>" + "<table>";
-      } else {
-        var content = "<table class='table table-condensed'>" + "<tr><th>City</th><td>" + feature.properties.city + "</td></tr>" + "<tr><th>Date</th><td>" + feature.properties.timespan + "</td></tr>" + "<table>";
+          for (i = 0; i < courseArray.length; i++) {
+            var listItem;
+            listItem = "<p class='popup-course'><i class='fa fa-book fa-lg' aria-hidden='true'></i> " + courseArray[i] + "</p>";
+            subjectList = subjectList + listItem;
+          }
+        subjectList = "Notable topics:" + subjectList;
+        console.log(subjectList);
       }
-      var title = feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.alias + "</a>";
-      var title = feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.alias + "&nbsp<i class='fa fa-link'></i></a>"
+
+      var contentFooter = "<h5 class='popup-footer'>" + location + " &nbsp;&nbsp; | &nbsp;&nbsp; " + date + "</h5>";
+
+
+      //feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.alias + "&nbsp<i class='fa fa-link'></i></a>"
+
+      var title = "<h4 class='popup-header'><i class='fa fa-map-pin' aria-hidden='true' ></i><span style='white-space: nowrap;'>" + position + " &nbsp; |</span> &nbsp; <span style='white-space: nowrap;''>" + "<a target='_blank' href='" + feature.properties.url + "''>" + name + "&nbsp<i class='fa fa-link'></i></a>" + "</span></h4>";
       feature1.on({
         click: function(e) {
           $("#feature-title").html(title);
-          $("#feature-info").html(content);
+          $("#feature-info").html(panelBullets + courseList + subjectList + contentFooter);
           $("#featureModal").modal("show");
           // highlight.clearLayers().addLayer(L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], highlightStyle));
         }
       });
-
     }
   });
 
 
-  // add feature layer to cluster layer
-  e.target.eachLayer(function(layer) {
-    layer.options.icon.options.iconUrl = "assets/icons/" + layer.feature.properties.marker_url;
-    layer.options.icon.options.iconSize = [null, null];
-    clusterGroup.addLayer(layer);
+// add feature layer to cluster layer
+e.target.eachLayer(function(layer) {
+  layer.options.icon.options.iconUrl = "assets/icons/" + layer.feature.properties.marker_url;
+  layer.options.icon.options.iconSize = [null, null];
+  clusterGroup.addLayer(layer);
 
-    // highlight clicked feature
-    clusterGroup.on('click', function(f) {
-      if (f.layer.feature.properties.shortAlias == layer.feature.properties.shortAlias) {
-        // highlight.clearLayers().addLayer(L.circleMarker([layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]], highlightStyle));
-      }
-    });
-
-    // create the legend
-    var afa =
-      $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+  // highlight clicked feature
+  clusterGroup.on('click', function(f) {
+    if (f.layer.feature.properties.shortAlias == layer.feature.properties.shortAlias) {
+      // highlight.clearLayers().addLayer(L.circleMarker([layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]], highlightStyle));
+    }
   });
 
-  function onmove() {
-    // remove all legend contents
+  // create the legend
+  var afa =
+    $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+});
 
-    $("#feature-list tbody").empty();
-    $("#feature-listDisabled tbody").empty();
-    // find the current map extent
+function onmove() {
+  // remove all legend contents
 
-    // loop through each feature
-    // if the feature is visible, place in vis list, and vice versa
-    e.target.eachLayer(function(layer) {
-      $("#feature-list tbody").clear;
-      if (map.getBounds().contains(layer.getLatLng())) {
-        var afa =
-          $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
-      } else {
-        var afa1 =
-          $("#feature-listDisabled tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" style="background-color: #121111;" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" class="nonActiveFeatureImage" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name nonActiveFeatureText">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
-      }
-    });
-  }
+  $("#feature-list tbody").empty();
+  $("#feature-listDisabled tbody").empty();
+  // find the current map extent
 
-  // reareange the legend when the extent changes
-  map.on('moveend', onmove);
+  // loop through each feature
+  // if the feature is visible, place in vis list, and vice versa
+  e.target.eachLayer(function(layer) {
+    $("#feature-list tbody").clear;
+    if (map.getBounds().contains(layer.getLatLng())) {
+      var afa =
+        $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+    } else {
+      var afa1 =
+        $("#feature-listDisabled tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" style="background-color: #121111;" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img height="24" class="nonActiveFeatureImage" src="assets/icons/' + layer.feature.properties.marker_url + '"></td><td class="feature-name nonActiveFeatureText">' + layer.feature.properties.shortAlias + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+    }
+  });
+}
 
-  // clear selected feature on map click or zoom
-  // map.on('click', function() {
-  //   highlight.clearLayers();
-  //
-  // });
-  // map.on('zoomstart', function() {
-  //   highlight.clearLayers();
-  // });
+// reareange the legend when the extent changes
+map.on('moveend', onmove);
+
+// clear selected feature on map click or zoom
+// map.on('click', function() {
+//   highlight.clearLayers();
+//
+// });
+// map.on('zoomstart', function() {
+//   highlight.clearLayers();
+// });
 
 });
