@@ -1,3 +1,22 @@
+.popup-course {
+		padding-left: 2.6em;
+		text-indent: -1.2em;
+}
+
+.popup-footer{
+      text-indent: 0.4em;
+}
+.popup-header{
+  text-indent: -.7em;
+}
+.popup-bullet{
+  padding-left: 1.9em;
+  text-indent: -.9em;
+}
+.popup-header{
+  text-indent: -.7em;
+}
+
 /***** Modal *****/
 
 .modal-content {

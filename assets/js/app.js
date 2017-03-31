@@ -186,7 +186,7 @@ var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function
         for (i = 1; i < 7; i++) {
           var currentBullet = feature.properties['bullet' + i];
           if (currentBullet != null) {
-            var listItem = "<p class='popup-bullet'><i class='fa fa-location-arrow fa-lg' aria-hidden='true'></i>  " + currentBullet + "</p>";
+            var listItem = "<p class='popup-bullet'><i class='fa fa-location-arrow fa-lg' aria-hidden='true'></i>  &nbsp;&nbsp;" + currentBullet + "</p>";
             panelBullets = panelBullets + listItem;
           }
         }
@@ -196,7 +196,7 @@ var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function
           //arrayUtils.forEach(courseArray, function(course){
           for (i = 0; i < courseArray.length; i++) {
             var listItem;
-            listItem = "<p class='popup-course'><i class='fa fa-book fa-lg' aria-hidden='true'></i> " + courseArray[i] + "</p>";
+            listItem = "<p class='popup-course'><i class='fa fa-book fa-lg' aria-hidden='true'></i> &nbsp;&nbsp;" + courseArray[i] + "</p>";
             courseList = courseList + listItem;
           }
           //});
@@ -209,10 +209,21 @@ var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function
 
           for (i = 0; i < courseArray.length; i++) {
             var listItem;
-            listItem = "<p class='popup-course'><i class='fa fa-book fa-lg' aria-hidden='true'></i> " + courseArray[i] + "</p>";
+            listItem = "<p class='popup-course'><i class='fa fa-book fa-lg' aria-hidden='true'></i> &nbsp;&nbsp;" + courseArray[i] + "</p>";
             subjectList = subjectList + listItem;
           }
         subjectList = "Notable topics:<br><br>" + subjectList;
+        console.log(subjectList);
+      }
+      else if(name == "Esri"){
+        var courseArray = ["Starting	Fresh	with	JavaScript	4.x:	Esri	User	Conference,	June	2016", "Building	Native	Apps	Using	AppStudio	for	ArcGIS:	Esri	Pre-Developer	Summit Hands-on	Training,	March	2016", "Debugging	offline	editing	using	the	ArcGIS	Runtime	SDK	for	iOS:	Esri	User	Conference,	July 2015"];
+
+        for (i = 0; i < courseArray.length; i++) {
+          var listItem;
+          listItem = "<p class='popup-course'><i class='fa fa-tv fa-lg' aria-hidden='true'></i> &nbsp;&nbsp;" + courseArray[i] + "</p>";
+           subjectList = subjectList + listItem;
+        }
+        subjectList = "Presentations:<br><br>" + subjectList;
         console.log(subjectList);
       }
 
@@ -221,7 +232,7 @@ var FL = L.mapbox.featureLayer('assets/data/data1.geojson').on('ready', function
 
       //feature.properties.position + " - <a href='" + feature.properties.url + "''>" + feature.properties.alias + "&nbsp<i class='fa fa-link'></i></a>"
 
-      var title = "<h4 class='popup-header'><i class='fa fa-map-pin' aria-hidden='true' ></i><span style='white-space: nowrap;'>" + position + " &nbsp; |</span> &nbsp; <span style='white-space: nowrap;''>" + "<a target='_blank' href='" + feature.properties.url + "''>" + name + "&nbsp<i class='fa fa-link'></i></a>" + "</span></h4>";
+      var title = "<h4 class='popup-header'><i class='fa fa-map-pin' aria-hidden='true' style='margin-left:20px; margin-right:10px;'></i><span style='white-space: nowrap;'>" + position + " &nbsp; |</span> &nbsp; <span style='white-space: nowrap;''>" + "<a target='_blank' href='" + feature.properties.url + "''>" + name + "&nbsp<i class='fa fa-link' style='margin-left:15px;'></i></a>" + "</span></h4>";
       feature1.on({
         click: function(e) {
           $("#feature-title").html(title);
