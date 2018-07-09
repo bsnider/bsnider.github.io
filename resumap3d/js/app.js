@@ -38,6 +38,7 @@ $(document).ready(function() {
 
     "dojo/on",
     "dojo/query",
+    "dojo/NodeList-traverse",
     "dojo/string",
     "dojo/parser",
 
@@ -51,7 +52,6 @@ $(document).ready(function() {
     "esri/request",
     "esri/WebScene",
 
-    "esri/core/Scheduler",
     "application/SlideList/SlideList",
     "dijit/layout/ContentPane",
 
@@ -63,10 +63,10 @@ $(document).ready(function() {
     VectorTileLayer, UniqueValueRenderer, PictureMarkerSymbol, SimpleMarkerSymbol,
     PopupTemplate, Query,
     declare, lang, kernel, arrayUtils, Deferred, all,
-    on, query, string, parser,
+    on, query, nodeTraverse, string, parser,
     dom, domClass, domConstruct, domStyle,
     registry, Portal, esriRequest, WebScene,
-    Scheduler, SlideList, ContentPane) {
+    SlideList, ContentPane) {
 
     if (/Mobi/.test(navigator.userAgent)) {
       isMobile = true;
@@ -147,12 +147,12 @@ $(document).ready(function() {
     // /////////          ////////////////////////////////////////
 
 
-    app.mapView.then(function() {
+    app.mapView.when(function() {
       app.mapView.popup.dockOptions.position = "top-right";
       console.log("mapView!");
     });
 
-    app.sceneView.then(function() {
+    app.sceneView.when(function() {
       console.log("sceneView!");
 
       var firstTime = true;
@@ -212,7 +212,7 @@ $(document).ready(function() {
 
     app.activeView = app.sceneView;
 
-    app.activeView.then(function() {
+    app.activeView.when(function() {
       console.log("activeView!");
       console.log(app.activeView);
       app.initialExtent = app.activeView.extent;
@@ -222,7 +222,7 @@ $(document).ready(function() {
     var featuresArray = []; // holds list of client-side graohics
 
 
-    scene.then(function() {
+    scene.when(function() {
       // var vtItemId = "0da65895327a45dd91acb890c6ed7690";
       // var vtUrl = "https://bradjsnider.maps.arcgis.com/sharing/rest/content/items/" + vtItemId + "/resources/styles/root.json";
       // var vtLayer = new VectorTileLayer({
@@ -276,11 +276,11 @@ $(document).ready(function() {
       var template = new PopupTemplate({
         title: setTitleInfo,
         content: setContentInfo,
-        actions: [{
-          id: "open-website",
-          image: "icons/link.png",
-          title: "Info"
-        }], //setActionInfo//,
+        // actions: [{
+        //   id: "open-website",
+        //   image: "icons/link.png",
+        //   title: "Info"
+        // }], //setActionInfo//,
         overwriteActions: true
       });
       console.log(template);
@@ -303,7 +303,7 @@ $(document).ready(function() {
         var name = feature.attributes.shortAlias;
         var position = feature.attributes.position;
 
-        return "<h4 class='popup-header'><i class='fa fa-map-pin' aria-hidden='true' style='margin-left:20px; margin-right:10px;'></i><span style='white-space: nowrap;'>" + position + " &nbsp;&nbsp; |</span> &nbsp;&nbsp; <span style='white-space: nowrap;''>" + name + "</span></h4>";
+        return "<h4 class='popup-header'><span><i class='fa fa-map-pin' aria-hidden='true' style='margin-left:20px; margin-right:10px;'></i>" + position + " &nbsp;&nbsp; |</span> &nbsp;&nbsp; <span>" + name + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <span><a target='_blank' href='" + feature.attributes.url + "'><i class='fa fa-link'></i></a></span></h4>";
       }
 
       function setContentInfo(feature) {
@@ -436,7 +436,7 @@ $(document).ready(function() {
 
 
             lyrView.queryFeatures().then(function(results) {
-              featuresArray = results;
+              featuresArray = results.features;
               // prints all the client-side graphics to the console
               console.log(featuresArray);
               featuresArray.sort(function(a, b) {
@@ -539,8 +539,47 @@ $(document).ready(function() {
         }
       }, parentId);
       //search.startup();
+      setSearchExpandEvents (search);
       return search;
     }
+
+    function setSearchExpandEvents (search) {
+
+          if (!search) {
+            return;
+          }
+
+          // Expand when search container or child element has focus
+          query(".calcite-search-expander").on("focusin", function(e){
+            var search = query(".calcite-search-expander .esri-search");
+            if (search && search.length > 0) {
+              search.addClass("calcite-search-expanded");
+            }
+          }.bind(this));
+
+          // Dismiss expanded search when li menu is clicked
+          query(".calcite-search-expander .esri-search__suggestions-menu").on("click", function(e){
+            query(".calcite-search-expander .esri-search__container").removeClass("esri-search--loading");
+            query(".calcite-search-expanded").removeClass("calcite-search-expanded");
+          });
+
+          // Hide search loading indicator
+          search.on(["search-start","search-complete","select-result"], function(e){
+            query(".calcite-search-expander .esri-search__container").removeClass("esri-search--loading");
+          });
+
+          // Dismiss expanded search when ui is clicked
+          query(window).on("click", function (e) {
+            var searchClicked = query(e.target).closest(".calcite-search-expanded")[0];
+            var searchExpanded = query(".calcite-search-expanded");
+            if (!searchClicked && searchExpanded.length > 0) {
+              query(".calcite-search-expander .esri-search__container").removeClass("esri-search--loading");
+              query(".calcite-search-expanded").removeClass("calcite-search-expanded");
+            }
+            return false;
+          });
+
+        }
 
     // Views - Listen to view size changes to show/hide panels
     app.mapView.watch("size", viewSizeChange);

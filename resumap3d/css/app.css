@@ -24,6 +24,27 @@
 }
 .esri-popup__header-title{
 color: #f8f8f8  !important;
+padding-top: 0px !important;
+padding-bottom: 4px !important;
+}
+
+.esri-search__sources-menu{
+  color: #fff;
+}
+
+.esri-search__sources-menu:hover{
+  color: ##6e6e6e;
+}
+
+.esri-search__submit-button{
+  background-color: #fff0;
+}
+
+.esri-search__submit-button:hover{
+  background-color: #fff;
+}
+.esri-icon-search:hover{
+  color: #2e2e2e;
 }
 
 .map-details{
