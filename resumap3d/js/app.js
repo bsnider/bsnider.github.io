@@ -38,6 +38,7 @@ $(document).ready(function () {
 
     "dojo/on",
     "dojo/query",
+    "dojo/NodeList-traverse",
     "dojo/string",
     "dojo/parser",
 
@@ -51,7 +52,6 @@ $(document).ready(function () {
     "esri/request",
     "esri/WebScene",
 
-    "esri/core/Scheduler",
     "application/SlideList/SlideList",
     "dijit/layout/ContentPane",
 
@@ -63,10 +63,10 @@ $(document).ready(function () {
     VectorTileLayer, UniqueValueRenderer, PictureMarkerSymbol, SimpleMarkerSymbol,
     PopupTemplate, Query,
     declare, lang, kernel, arrayUtils, Deferred, all,
-    on, query, string, parser,
+    on, query, nodeTraverse, string, parser,
     dom, domClass, domConstruct, domStyle,
     registry, Portal, esriRequest, WebScene,
-    Scheduler, SlideList, ContentPane) {
+    SlideList, ContentPane) {
 
       if (/Mobi/.test(navigator.userAgent)) {
         isMobile = true;

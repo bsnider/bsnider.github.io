@@ -116,16 +116,16 @@ define([
       console.log("show popup!");
       var slideLyr = this.view.map.layers.items;
 
-      var actions = [{
-          id: "open-website",
-          image: "icons/link.png",
-          title: "Info"
-        }]//setActionInfo//,
-      overwriteActions: true
+      // var actions = [{
+      //     id: "open-website",
+      //     image: "icons/link.png",
+      //     title: "Info"
+      //   }]//setActionInfo//,
+      //overwriteActions: true
 //      console.log(slideLyr);
       this.popTemp.title = setTitleInfo();
       this.popTemp.content = setContentInfo();
-      this.popTemp.actions = actions;
+      //this.popTemp.actions = actions;
       this.popTemp.overwriteActions = true;
 
 
@@ -134,8 +134,9 @@ define([
         var position = result.attributes.position;
         var location = result.attributes.city;
         var date = result.attributes.timespan;
+        var url = result.attributes.url;
 
-        return "<h4 class='popup-header'><i class='fa fa-map-pin' aria-hidden='true' style='margin-left:20px; margin-right:10px;'></i><span style='white-space: nowrap;'>" + position + " &nbsp;&nbsp; |</span> &nbsp;&nbsp; <span style='white-space: nowrap;''>" + name + "</span></h4>";
+        return "<h4 class='popup-header'><span><i class='fa fa-map-pin' aria-hidden='true' style='margin-left:20px; margin-right:10px;'></i>" + position + " &nbsp;&nbsp; |</span> &nbsp;&nbsp; <span>" + name + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <span><a target='_blank' href='" + url+ "'><i class='fa fa-link'></i></a></span></h4>";
 
       }
       function setContentInfo() {
@@ -197,12 +198,6 @@ define([
 
         return panelBullets + courseList + subjectList + contentFooter;
       }
-
-
-
-
-
-
 
       result.popupTemplate = this.popTemp;
       console.log(this.popTemp);
