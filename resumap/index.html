@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="description" content="BradleyJSnider.com">
+  <title>Bradley J. Snider</title>
+
+  <!-- Calcite Maps Bootstrap -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
+
+  <!-- Font Awesome -->
+  <script src="https://use.fontawesome.com/23847f6ec5.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+
+  <!-- Calcite Maps -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
+  <!--link rel="stylesheet" href="../../dist/css/calcite-maps.min-v0.10.css"-->
+  <!-- works -->
+
+  <!-- ArcGIS JS 4 -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.12/esri/themes/dark/main.css">
+
+  <!-- custom css-->
+  <link rel="stylesheet" href="app.css">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      color: #fff;
+    }
+  </style>
+
+</head>
+
+<!-- <body class="calcite-maps calcite-nav-top calcite-margin-all calcite-zoom-top-left calcite-layout-inline-left"> -->
+
+<body class="calcite-maps calcite-nav-top calcite-zoom-top-left">
+
+  <!-- Navbar -->
+
+  <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark calcite-bgcolor-black">
+    <!-- Menu -->
+    <div class="dropdown calcite-dropdown calcite-bg-light calcite-text-dark" role="presentation">
+      <a class="dropdown-toggle" role="menubutton" aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="calcite-dropdown-toggle">
+          <span class="sr-only">Toggle dropdown menu</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </a>
+      <ul class="dropdown-menu calcite-menu-drawer">
+        <!-- experience -->
+        <li><a role="button" tabindex="0" data-target="#experiencePanel" aria-haspopup="true"><i
+              class="fas fa-briefcase"></i>&nbsp;&nbsp;Experience</a></li>
+        <!--about-->
+        <li><a role="button" tabindex="0" data-target="#aboutPanel" aria-haspopup="true"><i
+              class="fas fa-user-tie"></i>&nbsp;&nbsp;About</a></li>
+        <!-- contact -->
+        <li><a role="button" tabindex="0" data-target="#contactPanel" aria-haspopup="true"><i
+              class="fas fa-envelope"></i>&nbsp;&nbsp;Contact</a></li>
+        <!-- resume -->
+        <li class=""><a role="button" class="hidden-lg" href="../SniderResumeWeb.pdf" data-toggle="collapse"
+            target="_blank" data-target=".navbar-collapse.in"><i
+              class="fas fa-cloud-download-alt"></i>&nbsp;&nbsp;Resume <i class='fas fa-external-link-alt'></i></a>
+        </li>
+        <!-- github -->
+        <li class=""><a id="github-btn" role="button" class="hidden-lg" href="//github.com/bsnider"
+            data-toggle="collapse" target="_blank" data-target=".navbar-collapse.in"><i
+              class="fab fa-github-alt"></i>&nbsp;&nbsp;GitHub <i class='fas fa-external-link-alt'></i></a></li>
+        <!-- super duper 2D -->
+        <li class=""><a id="github-btn" role="button" class="hidden-lg"
+            href="//bsnider.github.io/web-javascript/super-duper-extent-helper" data-toggle="collapse" target="_blank"
+            data-target=".navbar-collapse.in"><i class="fas fa-map"></i>&nbsp;&nbsp;Extent Helper 2D <i
+              class='fas fa-external-link-alt'></i></a></li>
+        <!-- super duper 3D -->
+        <li class=""><a id="github-btn" role="button" class="hidden-lg"
+            href="//bsnider.github.io/super-duper-extent-helper-4/" data-toggle="collapse" target="_blank"
+            data-target=".navbar-collapse.in"><i class="fas fa-globe"></i>&nbsp;&nbsp;Extent Helper 3D <i
+              class='fas fa-external-link-alt'></i></a></li>
+      </ul>
+    </div>
+
+    <!-- Title -->
+    <div class="calcite-title calcite-overflow-hidden">
+      <a style="font-size:26px;" class="hidden-xs" href="http://BradleyJSnider.com"><i class="fas fa-globe-americas"
+          aria-hidden="true" style="margin-left:20px; margin-right:10px; color:#337ab7"></i>
+        BradleyJSnider.com</a>
+
+      <a style="font-size:20px;" class="hidden-lg hidden-sm hidden-md" href="http://BradleyJSnider.com"><i
+          class="fas fa-globe-americas" aria-hidden="true"
+          style="margin-left:20px; margin-right:10px; color:#337ab7"></i>
+        BradleyJSnider.com</a>
+      </span>
+      <span class="calcite-title-divider hidden-xs"></span>
+      <span class="calcite-title-sub hidden-xs">ResuMap 3D</span>
+    </div>
+    <!-- Nav -->
+    <ul class="calcite-nav nav navbar-nav">
+      <div class="calcite-navbar-search calcite-search-expander" role="presentation" tabindex="-1">
+        <div id="searchNavDiv" tabindex="0"></div>
+      </div>
+      </li>
+    </ul>
+  </nav>
+  <!--/.navbar -->
+
+  <!-- Map Container  -->
+
+  <div class="calcite-map calcite-map-absolute">
+    <div id="tabContainer" class="tab-content">
+      <div id="mapTab" class="tab-pane fade" role="tabpanel">
+        <div id="mapViewDiv"></div>
+      </div>
+      <div id="sceneTab" class="tab-pane fade in active" role="tabpanel">
+        <div id="sceneViewDiv"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Container -->
+
+  <div
+    class="calcite-panels calcite-panels-right calcite-bg-custom calcite-text-light calcite-bgcolor-black panel-group"
+    role="tablist" aria-multiselectable="true">
+
+    <!-- Popup Panel -->
+
+    <!-- <div id="panelPopup" class="panel collapse in"> 
+          <div id="headingPopup" class="panel-heading" role="tab">
+            <div class="panel-title">
+              <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapsePopup" aria-expanded="false"   aria-controls="collapsePopup"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="panel-label">Popup</span></a> 
+              <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelPopup"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+            </div>
+          </div>
+          <div id="collapsePopup" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingPopup">
+            <div class="panel-body" id="popupDiv">
+              
+            </div>
+          </div>
+        </div> -->
+
+
+    <!-- Experience Panel -->
+
+    <div id="experiencePanel" class="panel collapse in">
+      <div id="headingExperience" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseExperience" aria-expanded="true"
+            aria-controls="collapseExperience"><i class="fas fa-briefcase"></i>&nbsp;&nbsp;<span
+              class="panel-label">Experience</span></a>
+          <!-- <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#experiencePanel"><span
+              class="esri-icon esri-icon-close" aria-hidden="true"></span></a> -->
+        </div>
+      </div>
+      <div id="collapseExperience" class="panel-collapse collapse in" role="tabpanel"
+        aria-labelledby="headingExperience">
+        <div class="panel-body">
+          <div id="slidesDiv" class="esri-widget slidescontainer"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Contact Panel -->
+
+    <div id="contactPanel" class="panel collapse">
+      <div id="headingContact" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="true"
+            aria-controls="collapseContact"><i class="fas fa-envelope"></i>&nbsp;&nbsp;<span class="panel-label">Contact
+              Info</span></a>
+          <!-- <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#contactPanel"><span
+              class="esri-icon esri-icon-close" aria-hidden="true"></span></a> -->
+        </div>
+      </div>
+      <div id="collapseContact" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingContact">
+        <div class="panel-body">
+          Please contact me!
+          <div class="row centered">
+            <div class="col-lg-8 col-lg-offset-2 w tooltip-demo">
+              <p style="text-align:center">
+                <a data-toggle="tooltip" title="LinkedIn" href="//www.linkedin.com/in/bradleysnider"><i
+                    class="fab fa-linkedin fa-3x"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <a data-toggle="tooltip" title="Twitter" href="//twitter.com/bjsnider"><i
+                    class="fab fa-twitter fa-3x"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <a data-toggle="tooltip" title="Email Me!" href="mailto:brad@bradleyjsnider.com"><i
+                    class="fas fa-envelope fa-3x"></i></a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Panel -->
+
+    <div id="aboutPanel" class="panel collapse">
+      <div id="headingAbout" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseAbout" aria-expanded="true"
+            aria-controls="collapseAbout"><i class="fas fa-user-tie"></i>&nbsp;&nbsp;<span class="panel-label">About
+              Me</span></a>
+          <!-- <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#contactPanel"><span
+              class="esri-icon esri-icon-close" aria-hidden="true"></span></a> -->
+        </div>
+      </div>
+      <div id="collapseAbout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAbout">
+        <div class="panel-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+
+                <p>Thanks for stopping by!</p>
+
+                <p>I am a GeoSpatial Developer II at <a href="//www.innovateteam.com">Innovate! Inc.</a> Essentially, I
+                  make apps with maps. I work with clients to develop Web-based geospatial applications. This includes
+                  front- and back-end development, geospatial analysis, server administration, and database management.
+                </p>
+                <p>I am a lover of Detroit, tech geek, map nerd, environmentalist, hiker, biker, and Michigan Football
+                  fanatic.</p>
+                <p>My journey has taken me from Metro Detroit > Ann Arbor > Detroit > Tucson > Redlands > San Diego.
+                  Please check
+                  out my interactive 'ResuMap', which shows a glimpse into my educational and professional journey.
+                </p>
+                <p style="color:rgb(36, 143, 255)">
+                  <em>Go Blue!</em>
+                </p>
+                <p>Brad</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div> <!-- /.calcite-panels -->
+
+  <script type="text/javascript">
+    var dojoConfig = {
+      packages: [{
+        name: "bootstrap",
+        location: "https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap"
+      },
+      {
+        name: "calcite-maps",
+        location: "https://esri.github.io/calcite-maps/dist/js/dojo"
+      }]
+    };
+  </script>
+
+  <!-- ArcGIS JS 4 -->
+  <script src="https://js.arcgis.com/4.12/"></script>
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
