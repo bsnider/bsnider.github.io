@@ -133,36 +133,17 @@
     class="calcite-panels calcite-panels-right calcite-bg-custom calcite-text-light calcite-bgcolor-black panel-group"
     role="tablist" aria-multiselectable="true">
 
-    <!-- Popup Panel -->
-
-    <!-- <div id="panelPopup" class="panel collapse in"> 
-          <div id="headingPopup" class="panel-heading" role="tab">
-            <div class="panel-title">
-              <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapsePopup" aria-expanded="false"   aria-controls="collapsePopup"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="panel-label">Popup</span></a> 
-              <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelPopup"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
-            </div>
-          </div>
-          <div id="collapsePopup" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingPopup">
-            <div class="panel-body" id="popupDiv">
-              
-            </div>
-          </div>
-        </div> -->
-
-
     <!-- Experience Panel -->
 
-    <div id="experiencePanel" class="panel collapse in">
+    <div id="experiencePanel" class="panel collapse">
       <div id="headingExperience" class="panel-heading" role="tab">
         <div class="panel-title">
           <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseExperience" aria-expanded="true"
             aria-controls="collapseExperience"><i class="fas fa-briefcase"></i>&nbsp;&nbsp;<span
               class="panel-label">Experience</span></a>
-          <!-- <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#experiencePanel"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a> -->
         </div>
       </div>
-      <div id="collapseExperience" class="panel-collapse collapse in" role="tabpanel"
+      <div id="collapseExperience" class="panel-collapse collapse" role="tabpanel"
         aria-labelledby="headingExperience">
         <div class="panel-body">
           <div id="slidesDiv" class="esri-widget slidescontainer"></div>
@@ -179,8 +160,6 @@
           <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="true"
             aria-controls="collapseContact"><i class="fas fa-envelope"></i>&nbsp;&nbsp;<span class="panel-label">Contact
               Info</span></a>
-          <!-- <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#contactPanel"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a> -->
         </div>
       </div>
       <div id="collapseContact" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingContact">
@@ -204,17 +183,17 @@
 
     <!-- About Panel -->
 
-    <div id="aboutPanel" class="panel collapse">
+    <div id="aboutPanel" class="panel collapse in">
       <div id="headingAbout" class="panel-heading" role="tab">
         <div class="panel-title">
           <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseAbout" aria-expanded="true"
             aria-controls="collapseAbout"><i class="fas fa-user-tie"></i>&nbsp;&nbsp;<span class="panel-label">About
               Me</span></a>
-          <!-- <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#contactPanel"><span
-              class="esri-icon esri-icon-close" aria-hidden="true"></span></a> -->
+               <a class="panel-close" role="button" id="panelClose" data-toggle="collapse" tabindex="0" href="#aboutPanel"><span
+              class="esri-icon esri-icon-close" aria-hidden="true""></span></a>
         </div>
       </div>
-      <div id="collapseAbout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAbout">
+      <div id="collapseAbout" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAbout">
         <div class="panel-body">
           <div class="container-fluid">
             <div class="row">
@@ -226,16 +205,18 @@
                   make apps with maps. I work with clients to develop Web-based geospatial applications. This includes
                   front- and back-end development, geospatial analysis, server administration, and database management.
                 </p>
-                <p>I am a lover of Detroit, tech geek, map nerd, environmentalist, hiker, biker, and Michigan Football
-                  fanatic.</p>
+                <p>I am a lover of Detroit, tech geek, map nerd, environmentalist, hiker, biker, tennis ball chaser, and Michigan Football
+                  fanatic. <span style="color:rgb(36, 143, 255)">
+                    <em>Go Blue!</em>
+                  </span></p>
                 <p>My journey has taken me from Metro Detroit > Ann Arbor > Detroit > Tucson > Redlands > San Diego.
-                  Please check
-                  out my interactive 'ResuMap', which shows a glimpse into my educational and professional journey.
+                  Please check out my interactive 'ResuMap', which shows a glimpse into my educational and professional
+                  journey.
                 </p>
-                <p style="color:rgb(36, 143, 255)">
-                  <em>Go Blue!</em>
+                <p>
+                  <em>Cheers!</em>
                 </p>
-                <p>Brad</p>
+                <p><em>Brad</em></p>
 
               </div>
             </div>
